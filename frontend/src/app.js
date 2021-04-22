@@ -13,10 +13,11 @@ export default function App() {
   ])
 
   const [topics, setTopics] = useState([
-    {id: 1, title: 'Technical Questions'},
-    {id: 4, title: 'General Questions'},
-    {id: 2, title: 'Memes'},
-    {id: 3, title: 'Music'},
+    {id: 1, title: 'Announcements'},
+    {id: 2, title: 'Technical Questions'},
+    {id: 3, title: 'General Questions'},
+    {id: 4, title: 'Memes'},
+    {id: 5, title: 'Music'},
   ])
 
   return (
@@ -29,7 +30,7 @@ export default function App() {
       <Container maxW="container.lg" d='flex'>
 
         <Container maxW="container.md" p={0}>
-            <CreatePost setPosts={setPosts}/>
+            <CreatePost setPosts={setPosts} topics={topics}/>
             <Post posts={posts}/>
         </Container>
 

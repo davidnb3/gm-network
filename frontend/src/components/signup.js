@@ -15,6 +15,7 @@ import {
   ModalOverlay,
   VStack,
   useDisclosure,
+  useShortcut,
 } from "@chakra-ui/react";
 import { useState } from 'react';
 
@@ -22,6 +23,7 @@ export default function Signup() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const  [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
+  const [ username, setUsername ] = useState('');
   const [ showPassword, setShowPassword ] = useState(false);
   const isInvalid = password === '' || email === '';
   
@@ -44,6 +46,15 @@ export default function Signup() {
             <form method='POST' onSubmit={handleSignUp}>
               <ModalBody>
                 <VStack spacing={6}>
+                <FormControl isRequired>
+                    <FormLabel htmlFor='username'>User Name</FormLabel>
+                    <Input
+                      type='text'
+                      id='username'
+                      value={username}
+                      onChange={({ target }) => setUsername(target.value)}
+                    />
+                  </FormControl>
                   <FormControl isRequired>
                     <FormLabel htmlFor='email'>Email Address</FormLabel>
                     <Input

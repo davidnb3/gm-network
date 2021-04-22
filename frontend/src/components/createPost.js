@@ -1,11 +1,12 @@
-import {Box, FormControl, Input, useDisclosure, Collapse, Textarea, Button} from "@chakra-ui/react";
+import {Box, FormControl, Input, useDisclosure, Collapse, Textarea, Button, HStack, useBoolean} from "@chakra-ui/react";
 import { useState } from "react";
 
-export default function CreatePost({setPosts}) {
+export default function CreatePost({setPosts, topics}) {
   const { isOpen, onOpen } = useDisclosure();
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const invalid = title === '';
+  
 
   function handleAddPost(event) {
     event.preventDefault();
@@ -59,6 +60,13 @@ export default function CreatePost({setPosts}) {
                   borderColor='gray.200'
                   onChange={({target}) => setText(target.value)}
                 />
+                <HStack spacing={4}>
+                  {topics.map((topic) => (
+                    <Button key={topic.id} colorScheme="teal" size="xs">
+                      {topic.title}
+                    </Button>
+                  ))};
+                </HStack>
                 <Button type='submit' disabled={invalid} w={92}>Post</Button>
               </Collapse>
             </FormControl>
