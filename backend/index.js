@@ -1,6 +1,7 @@
 const express = require('express');
 
 const postRoutes = require('./routes/post');
+const topicRoutes = require('./routes/topic');
 const userRoutes = require('./routes/user');
 const commentRoutes = require('./routes/comment');
 
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.use('/api/posts', postRoutes);
+app.use('/api/topics', topicRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/api/comments', commentRoutes);
 
