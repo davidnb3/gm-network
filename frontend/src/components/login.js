@@ -19,15 +19,15 @@ import { useState } from 'react';
 
 export default function LogIn() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const  [ email, setEmail ] = useState('');
+  const  [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ showPassword, setShowPassword ] = useState(false);
-  const isInvalid = password === '' || email === '';
+  const isInvalid = password === '' || username === '';
   
   function handleSignIn(event) {
     event.preventDefault();
     console.log('password', password);
-    console.log('email', email);
+    console.log('username', username);
   }
 
   return(
@@ -44,12 +44,12 @@ export default function LogIn() {
               <ModalBody>
                 <VStack spacing={6}>
                   <FormControl isRequired>
-                    <FormLabel htmlFor='email'>Email Address</FormLabel>
+                    <FormLabel htmlFor='username'>User Name</FormLabel>
                     <Input
-                      type='email'
-                      id='email'
-                      value={email}
-                      onChange={({ target }) => setEmail(target.value)}
+                      type='text'
+                      id='username'
+                      value={username}
+                      onChange={({ target }) => setUsername(target.value)}
                     />
                   </FormControl>
                   <FormControl isRequired>
