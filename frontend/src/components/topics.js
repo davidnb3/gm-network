@@ -1,6 +1,6 @@
 import { Box, ListItem, UnorderedList } from "@chakra-ui/react"
 
-export default function SideContainer({topics}) {
+export default function Topics({topics}) {
   return(
     <UnorderedList marginTop={6} styleType='none'>
       {topics.map((topic) => (

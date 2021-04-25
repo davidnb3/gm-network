@@ -2,7 +2,7 @@ import { Container } from "@chakra-ui/react"
 import {useState} from 'react';
 import Post from './components/post';
 import CreatePost from './components/createPost';
-import SideContainer from './components/sideContainer';
+import Topics from './components/topics';
 import Navbar from './components/navbar';
 
 export default function App() {
@@ -35,7 +35,7 @@ export default function App() {
         </Container>
 
         <Container maxW="container.sm" p={0}>
-          <SideContainer topics={topics}/>
+          <Topics topics={topics}/>
         </Container>
 
       </Container>
