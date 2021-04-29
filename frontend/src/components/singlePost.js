@@ -4,6 +4,9 @@ import { Container,
   FormControl,
   Textarea,
   Button } from "@chakra-ui/react"
+import {
+  Route
+} from "react-router-dom";
 import { useState, useEffect } from 'react';
 import Comments from './comments';
 
@@ -90,7 +93,7 @@ export default function SinglePost({ match }) {
             <Button type='submit' disabled={invalid} w='106px'>Comment</Button>
         </FormControl>
       </form>
-      <Comments />
+      <Route path={'/:id'} component={Comments} />
     </Container>
   )
 };
