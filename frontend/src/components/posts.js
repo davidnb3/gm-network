@@ -6,7 +6,7 @@ export default function Post({posts}) {
   return(
     <>
       
-        <VStack spacing={6}>
+        <VStack spacing={6}  marginBottom={6} >
           {posts.map((post) => (
             <Link
               to={`/${post.post_id}`}
