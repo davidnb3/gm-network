@@ -1,12 +1,12 @@
-import { Box, VStack, Heading } from "@chakra-ui/react"
+import { Box, VStack } from "@chakra-ui/react"
 import { useState, useEffect } from 'react';
 
-export default function Comments() {
+export default function Comments({ match }) {
   const [ comments, setComments ] = useState([]); 
 
   async function getComments() {
     try {
-      const response = await fetch('http://localhost:5000/api/comments');
+      const response = await fetch(`http://localhost:5000/api/comments/${match.params.id}`);
       const data = await response.json();
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -30,6 +30,7 @@ export default function Comments() {
               key={comment.comment_id}
               style={{width: '100%'}} 
               bg="white"
+              marginTop={12}
               p={4}
               borderColor='#CBD5E0'
               borderWidth='1px'
