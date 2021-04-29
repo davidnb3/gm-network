@@ -1,7 +1,11 @@
+const pool = require('../middleware/db');
+
 exports.getAllComments = async (req, res) => {
   try {
+    const {id} = req.params;
     const allComments = await pool.query(
-      'SELECT * FROM comments'
+      'SELECT * FROM comments WHERE post_id = $1 ORDER BY created_on DESC',
+      [id]
     );
     res.status(200).json(allComments.rows);
   } catch (error) {
@@ -13,7 +17,7 @@ exports.createComment = async (req, res) => {
   try {
     // Get form data from request body
     const {user_id, post_id, body} = req.body;
-    // Save form data to database table 'posts'
+    // Save form data to database table 'comments'
     const newComment = await pool.query(
       'INSERT INTO comments (user_id, post_id, comment_body, created_on) \
       VALUES ($1, $2, $3, $4) RETURNING *',
