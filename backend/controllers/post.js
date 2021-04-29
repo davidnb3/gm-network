@@ -3,7 +3,7 @@ const pool = require('../middleware/db');
 exports.getAllPosts = async (req, res) => {
   try {
     const allPosts = await pool.query(
-      'SELECT * FROM posts'
+      'SELECT * FROM posts ORDER BY created_on DESC'
     );
     res.status(200).json(allPosts.rows);
   } catch (error) {
