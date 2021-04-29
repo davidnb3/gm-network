@@ -43,6 +43,7 @@ export default function App() {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
+      console.log(data);
       setPosts(data);
     } catch (error) {
       console.log(error);
@@ -59,7 +60,8 @@ export default function App() {
     <Router>
       <div style={{
           backgroundColor:'#dbdae8',
-          height: '100vh'
+          minHeight: '100vh',
+          height: '100%'
           }}
         >
         <Navbar />
