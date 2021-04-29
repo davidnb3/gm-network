@@ -13,7 +13,7 @@ export default function CreatePost({topics}) {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [selectTopic, setSelectTopic] = useState();
-  const invalid = title === '';
+  const invalid = title === '' || selectTopic === undefined;
 
   async function handleAddPost(event) {
     event.preventDefault();
