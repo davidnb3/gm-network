@@ -1,33 +1,48 @@
-import {Box, FormControl, Input, useDisclosure, Collapse, Textarea, Button, HStack, useBoolean} from "@chakra-ui/react";
 import { useState } from "react";
+import {Box,
+  FormControl,
+  Input,
+  useDisclosure,
+  Collapse,
+  Textarea,
+  Button,
+  HStack} from "@chakra-ui/react";
 
-export default function CreatePost({setPosts, topics}) {
+export default function CreatePost({topics}) {
   const { isOpen, onOpen } = useDisclosure();
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
+  const [selectTopic, setSelectTopic] = useState();
   const invalid = title === '';
-  
 
-  function handleAddPost(event) {
+  async function handleAddPost(event) {
     event.preventDefault();
-    const title = event.target.elements.title.value;
-    const text = event.target.elements.text.value;
-    const post = {
-      id: Math.random(),
-      title,
-      body: text
+    try {
+      const post = {
+        user_id: 1,
+        topic_id: selectTopic,
+        title: title,
+        body: text
+      };
+      const response = await fetch(('http://localhost:5000/api/posts'), {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(post)
+      });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      
+    } catch (error) {
+      console.log(error);
     }
-    setPosts(prevPosts => {
-      return prevPosts.concat(post)
-    })
     setTitle('');
     setText('');
   }
 
   return(
-    <div>
+    <>
         <Box
-          marginTop={6}
           marginBottom={6}
           bg="white"
           w="100%"
@@ -40,6 +55,7 @@ export default function CreatePost({setPosts, topics}) {
             <FormControl>
               <Input
                 isRequired
+                id='postTitle'
                 name='title'
                 value={title}
                 onFocus={onOpen}
@@ -62,8 +78,16 @@ export default function CreatePost({setPosts, topics}) {
                 />
                 <HStack spacing={4}>
                   {topics.map((topic) => (
-                    <Button key={topic.id} colorScheme="teal" size="xs">
-                      {topic.title}
+                    <Button
+                      key={topic.topic_id}
+                      id={topic.topic_id}
+                      value={topic.topic_id}
+                      type='button'
+                      colorScheme="teal"
+                      size="xs"
+                      onClick={({target}) => setSelectTopic(target.value)}
+                    >
+                      {topic.topic_name}
                     </Button>
                   ))};
                 </HStack>
@@ -72,6 +96,6 @@ export default function CreatePost({setPosts, topics}) {
             </FormControl>
           </form>
         </Box>     
-    </div>
+    </>
   )
 }
