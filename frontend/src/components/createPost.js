@@ -32,7 +32,7 @@ export default function CreatePost({topics}) {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-      
+      window.location = '/';
     } catch (error) {
       console.log(error);
     }
@@ -50,6 +50,10 @@ export default function CreatePost({topics}) {
           borderColor='#CBD5E0'
           borderWidth='1px'
           borderRadius='5px'
+          transition='0.3s'
+          _hover={{
+            boxShadow:"xl"
+          }}
         >
           <form method='POST' onSubmit={handleAddPost}>
             <FormControl>
