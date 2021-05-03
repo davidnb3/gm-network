@@ -1,12 +1,15 @@
-import { Box, VStack } from "@chakra-ui/react"
+import { Box, VStack, Text } from "@chakra-ui/react"
 import { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 
-export default function Comments({ match }) {
-  const [ comments, setComments ] = useState([]); 
+
+export default function Comments() {
+  const [ comments, setComments ] = useState([]);
+  const {id} = useParams();
 
   async function getComments() {
     try {
-      const response = await fetch(`http://localhost:5000/api/comments/${match.params.id}`);
+      const response = await fetch(`http://localhost:5000/api/comments/${id}`);
       const data = await response.json();
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -37,8 +40,8 @@ export default function Comments({ match }) {
               borderRadius='5px'
             >
               
-              <p>User ID: {comment.user_id}</p>
-              <p> {comment.comment_body} </p>
+              <Text color='grey' fontSize='xs'>Posted by: User ID: {comment.user_id}</Text>
+              <Text> {comment.comment_body} </Text>
             </Box>
             
           ))}

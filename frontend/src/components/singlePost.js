@@ -1,23 +1,27 @@
-import { Container,
-  Box,
+import {
+  Container,
   Heading,
   FormControl,
   Textarea,
-  Button } from "@chakra-ui/react"
+  Button,
+  HStack,
+  Text } from "@chakra-ui/react"
 import {
-  Route
+  Route,
+  useParams
 } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import Comments from './comments';
 
-export default function SinglePost({ match }) {
+export default function SinglePost() {
   const [singlePost, setSinglePost] = useState({});
   const [commentBody, setCommentBody] = useState('');
+  const {id} = useParams();
   const invalid = commentBody === '';
 
-  async function getOnePost() {
+  async function getSinglePost() {
     try {
-      const response = await fetch(`http://localhost:5000/api/posts/${match.params.id}`);
+      const response = await fetch(`http://localhost:5000/api/posts/${id}`);
       const data = await response.json();
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -28,13 +32,12 @@ export default function SinglePost({ match }) {
     }
   };
 
-
   async function handleAddComment(event) {
     event.preventDefault();
     try {
       const comment = {
         user_id: 1,
-        post_id: match.params.id,
+        post_id: id,
         body: commentBody
       };
       const response = await fetch(('http://localhost:5000/api/comments'), {
@@ -45,14 +48,14 @@ export default function SinglePost({ match }) {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-      
+      window.location = `/post/${id}`;
     } catch (error) {
       console.log(error);
     }
   } 
 
   useEffect(() => {
-    getOnePost();
+    getSinglePost();
   }, [] );
 
 
@@ -67,12 +70,14 @@ export default function SinglePost({ match }) {
       borderWidth='1px'
       borderRadius='5px'
     >  
-      <p>User ID:{singlePost.user_id}</p>
-      <Heading size='sm'>
+      <HStack fontSize='xs' marginBottom='4px'>
+        <Text>Topic ID:{singlePost.topic_id}</Text>
+        <Text style={{color : 'grey'}}>Posted by: User ID: {singlePost.user_id}</Text>
+      </HStack>
+      <Heading size='md' fontWeight='500'>
         {singlePost.post_title}
       </Heading>
-      <p>Topic ID: {singlePost.topic_id}</p>
-      <p>{singlePost.post_body}</p>
+      <Text>{singlePost.post_body}</Text>
       <form method='POST' onSubmit={handleAddComment}>
         <FormControl
           d='flex'
@@ -93,7 +98,9 @@ export default function SinglePost({ match }) {
             <Button type='submit' disabled={invalid} w='106px'>Comment</Button>
         </FormControl>
       </form>
-      <Route path={'/:id'} component={Comments} />
+      <Route path={'/post/:id'} render={() => (
+        <Comments />
+      )} />
     </Container>
   )
 };
