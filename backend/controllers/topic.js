@@ -13,9 +13,9 @@ exports.getAllTopics = async (req, res) => {
 
 exports.getTopicPosts = async (req, res) => {
   try {
-    const {id} = req.params;
+    const {topic_id} = req.body;
     const allTopicPosts = await pool.query(
-      'SELECT * FROM posts WHERE topic_id = $1', [id]
+      'SELECT * FROM posts WHERE topic_id = $1 ORDER BY created_on DESC', [topic_id]
     );
     res.status(200).json(allTopicPosts.rows);
   } catch (error) {
