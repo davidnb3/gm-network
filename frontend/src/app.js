@@ -1,6 +1,6 @@
 import { Container } from "@chakra-ui/react"
 import { useState, useEffect } from 'react';
-import Post from './components/posts';
+import Posts from './components/posts';
 import CreatePost from './components/createPost';
 import Topics from './components/topics';
 import Navbar from './components/navbar';
@@ -23,18 +23,11 @@ export default function App() {
        if (!response.ok) {
         throw new Error(response.statusText);
       }
-      capitalizeFirstLetter(data)
       setTopics(data);
      } catch (error) {
        console.log(error)
      }
   };
-
-  function capitalizeFirstLetter(data) {
-    for (let i in data) {
-      return data[i].topic_name.charAt(0).toUpperCase() + data[i].topic_name.slice(1);
-    }
-  }
 
   async function getPosts() {
     try {
@@ -43,12 +36,13 @@ export default function App() {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-      console.log(data);
       setPosts(data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  
 
   useEffect(() => {
     getPosts();
@@ -71,17 +65,19 @@ export default function App() {
 
                 <Container maxW="container.md" p={0} m='0 20px 0 20px'>
                   <CreatePost topics={topics}/>
-                  <Post posts={posts} setPosts={setPosts} />
+                  <Posts posts={posts} setPosts={setPosts} />
                 </Container>
 
                 <Container flex='1' maxW="container.sm" p={0}>
-                  <Topics topics={topics} setTopics={setTopics}/>
+                  <Topics topics={topics} setPosts={setPosts}/>
                 </Container>
 
               </Container>
             </Route>
 
-            <Route path={'/:id'} component={SinglePost} />
+            <Route path={'/post/:id'} render={() => (
+              <SinglePost />
+            )}/>
 
           </Switch>
 
