@@ -3,7 +3,10 @@ const pool = require('../middleware/db');
 exports.getAllPosts = async (req, res) => {
   try {
     const allPosts = await pool.query(
-      'SELECT * FROM posts ORDER BY created_on DESC'
+      'SELECT * FROM posts p \
+      JOIN users u ON p.user_id = u.user_id \
+      JOIN topics t ON p.topic_id = t.topic_id \
+      ORDER BY p.created_on DESC'
     );
     res.status(200).json(allPosts.rows);
   } catch (error) {
@@ -15,7 +18,10 @@ exports.getOnePost = async (req, res) => {
   try {
     const {id} = req.params;
     const selectedPost = await pool.query(
-      'SELECT * FROM posts WHERE post_id = $1', [id]
+      'SELECT * FROM posts p \
+      JOIN users u ON p.user_id = u.user_id \
+      JOIN topics t ON p.topic_id = t.topic_id \
+      WHERE p.post_id = $1', [id]
     );
     res.status(200).json(selectedPost.rows[0]);
   } catch (error) {
@@ -57,15 +63,20 @@ exports.updatePost = async (req, res) => {
 exports.setVoteStatus = async (req, res) => {
   try {
     const {id} = req.params;
-    const {user_id, vote} = req.body;
-    const post = await pool.query(
-      'SELECT * FROM posts WHERE post_id = $1', [id]
-    );
-    if (sauce.usersLiked === null) {
-      sauce.usersLiked = [];
+    const {vote} = req.body;
+    if (vote === 1) {
+      const votedPost = await pool.query(
+        'UPDATE posts SET post_upvotes = post_upvotes + 1 WHERE post_id = $1 \
+        RETURNING *', [id]
+      );
+      res.status(200).json(votedPost.rows[0])
     }
-    if (sauce.usersDisliked === null) {
-        sauce.usersDisliked = [];
+    if (vote === -1) {
+      const votedPost = await pool.query(
+        'UPDATE posts SET post_downvotes = post_downvotes + 1 WHERE post_id = $1 \
+        RETURNING *', [id]
+      );
+      res.status(200).json(votedPost.rows[0])
     }
   } catch (error) {
     res.status(404).json(error);
@@ -75,8 +86,9 @@ exports.setVoteStatus = async (req, res) => {
 exports.deletePost = async (req, res) => {
   try {
     const {id} = req.params;
+    const {user_id} = req.body;
     await pool.query(
-      'DELETE FROM posts WHERE post_id = $1', [id]
+      'DELETE FROM posts WHERE post_id = $1 AND user_id = $2', [id, user_id]
     );
     res.status(200).json({message: 'Post successfully deleted!'});
   } catch (error) {
