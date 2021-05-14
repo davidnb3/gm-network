@@ -4,7 +4,9 @@ exports.getAllComments = async (req, res) => {
   try {
     const {id} = req.params;
     const allComments = await pool.query(
-      'SELECT * FROM comments WHERE post_id = $1 ORDER BY created_on DESC',
+      'SELECT * FROM comments c \
+      INNER JOIN users u ON c.user_id = u.user_id \
+      WHERE post_id = $1 ORDER BY c.created_on DESC',
       [id]
     );
     res.status(200).json(allComments.rows);
