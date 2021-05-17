@@ -2,19 +2,16 @@ import { Button } from "@chakra-ui/react"
 import { useState } from "react";
 
 
-export default function Topics({topics, setPosts}) {
+export default function Topics({topics, setPosts, getPosts, authToken}) {
   const [topic, setTopic ] = useState();
 
   async function handleSetTopic(event) {
     event.preventDefault();
     try {
-      const selectedTopic = {
-        topic_id: topic
-      }
       const response = await fetch(('http://localhost:5000/api/topics'), {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(selectedTopic)
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`},
+        body: JSON.stringify({topic_id: topic})
       })
       const data = await response.json();
       if (!response.ok) {
@@ -27,7 +24,27 @@ export default function Topics({topics, setPosts}) {
   }
 
   return(
-    <>  
+    <> 
+      <form onSubmit={getPosts}>
+        <Button
+          type='submit'
+          bg="white"
+          fontWeight='normal'
+          variant='outline'
+          w="100%"
+          h='48px'
+          p={4}
+          borderRadius='5px'
+          border="2px"
+          borderColor="purple.300"
+          marginBottom={2}
+          _hover={{
+            boxShadow: 'lg'
+          }}
+        >
+              Show All
+        </Button>
+      </form>
       <form onSubmit={handleSetTopic} >
         {topics.map((topic) => (
           <Button
@@ -42,7 +59,7 @@ export default function Topics({topics, setPosts}) {
             p={4}
             borderRadius='5px'
             border="2px"
-            borderColor="green.500"
+            borderColor="purple.300"
             marginBottom={2}
             _hover={{
               boxShadow: 'lg'
