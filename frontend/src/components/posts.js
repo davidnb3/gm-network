@@ -1,58 +1,86 @@
-import { VStack, Heading, HStack, Flex, Container, Text } from "@chakra-ui/react"
-import { GoArrowUp, GoArrowDown } from "react-icons/go";
+import {
+  Heading,
+  HStack,
+  Flex,
+  Container,
+  Text,
+  Badge,
+  Button,
+  Box,
+  Tooltip,
+} from "@chakra-ui/react"
+import { DeleteIcon } from '@chakra-ui/icons';
 import { Link } from "react-router-dom";
+import { useState } from 'react';
+import DeleteAlert from './deleteAlert';
 
-export default function Posts({posts}) {
+export default function Posts({post, authToken, userId}) {
+  const [isOpen, setIsOpen] = useState(false)
+  const onClose = () => setIsOpen(false)
+
+  const handleDeleteBtn = (event) => {
+    event.preventDefault();
+    setIsOpen(true);
+  };
+
+  const handleDeletePost = async () => {
+    try {
+      const response = await fetch((`http://localhost:5000/api/${post.post_id}`), {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`}, 
+        body: JSON.stringify(userId)
+      });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return(
-    <>
-      
-        <VStack spacing={6}  marginBottom={6} >
-          {posts.map((post) => (
-            <Link
-              to={`/post/${post.post_id}`}
-              key={post.post_id}
-              style={{width: '100%'}}
-            >
-              <Flex
-                bg="white"
-                p={0}
-                borderColor='#CBD5E0'
-                borderWidth='1px'
-                borderRadius='5px'
-                transition='0.4s'
-                _hover={{
-                  boxShadow:"xl"
-                }}
-              >
-                <Container
-                  maxW='40px'
-                  p={4}
-                  m={0}
-                  bg='#FAF5FF'
-                  borderRadius='5px 0 0 5px'
-                  d='flex'
-                  flexDirection='column'
-                  alignItems='center'
-                  justifyContent='center'
+    <>  
+      <Link
+        to={`/post/${post.post_id}`}
+        style={{width: '100%'}}
+      >
+        <Flex
+          bg="white"
+          p={0}
+          borderColor='#CBD5E0'
+          borderWidth='1px'
+          borderRadius='5px'
+          transition='0.4s'
+          _hover={{
+            boxShadow:"xl"
+          }}
+        >
+          <Container p='12px 24px 24px 24px' m={0} maxW='100%'>
+            <Flex justifyContent='space-between'>
+              <HStack marginBottom='4px' lineHeight='1.2rem'>
+                <Badge colorScheme='purple' fontSize="0.6rem">{post.topic_name}</Badge>
+                <Text color='grey' fontSize='xs'>Posted by: {post.user_name}</Text>
+              </HStack>
+              <Tooltip label="Delete Post" fontSize="xs">
+                <Button
+                  as={Box}
+                  bg='none'
+                  p={0}
+                  size='sm'
+                  bg='transparent'
+                  display={userId !== post.user_id ? 'none' : 'flex'}
+                  onClick={(event) => handleDeleteBtn(event)}
                 >
-                  <GoArrowUp size={20} style={{color : 'grey'}}/>
-                    <Text style={{fontSize: '0.9rem'}}>0</Text>
-                  <GoArrowDown size={20} style={{color : 'grey'}}/>
-                </Container>
-                <Container p='8px 24px 24px 24px' m={0} w='100%' lineHeight='1.8rem'>
-                  <HStack fontSize='xs' marginBottom='4px'>
-                    <Text>Topic ID:{post.topic_id}</Text>
-                    <Text style={{color : 'grey'}}>Posted by: User ID: {post.user_id}</Text>
-                  </HStack>
-                  <Heading size='md' fontWeight='500'> {post.post_title} </Heading>
-                  <Text> {post.post_body} </Text>
-                </Container>
-              </Flex>
-            </Link>
-          ))}
-        </VStack>
-      
+                  <DeleteIcon color='red.600'/>
+                </Button>
+              </Tooltip>
+            </Flex>
+            <Heading size='md' fontWeight='500' lineHeight='2.2rem'> {post.post_title} </Heading>
+            <Text lineHeight='1.6rem'> {post.post_body.substring(0,250)} ...</Text>
+          </Container>
+        </Flex>
+      </Link>
+      <DeleteAlert onClose={onClose} isOpen={isOpen} handleDeletePost={handleDeletePost}/>
     </>
   )
 }
