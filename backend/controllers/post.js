@@ -60,29 +60,6 @@ exports.updatePost = async (req, res) => {
   }
 };
 
-exports.setVoteStatus = async (req, res) => {
-  try {
-    const {id} = req.params;
-    const {vote} = req.body;
-    if (vote === 1) {
-      const votedPost = await pool.query(
-        'UPDATE posts SET post_upvotes = post_upvotes + 1 WHERE post_id = $1 \
-        RETURNING *', [id]
-      );
-      res.status(200).json(votedPost.rows[0])
-    }
-    if (vote === -1) {
-      const votedPost = await pool.query(
-        'UPDATE posts SET post_downvotes = post_downvotes + 1 WHERE post_id = $1 \
-        RETURNING *', [id]
-      );
-      res.status(200).json(votedPost.rows[0])
-    }
-  } catch (error) {
-    res.status(404).json(error);
-  }
-};
-
 exports.deletePost = async (req, res) => {
   try {
     const {id} = req.params;

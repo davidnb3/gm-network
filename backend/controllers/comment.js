@@ -31,10 +31,6 @@ exports.createComment = async (req, res) => {
   }
 };
 
-exports.setVoteStatus = () => {
-
-}
-
 exports.updateComment = async (req, res) => {
   try {
     const {body} = req.body;
