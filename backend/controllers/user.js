@@ -53,3 +53,15 @@ exports.login = async (req, res) => {
     res.status(500).json(error);
   }
 }
+
+
+exports.getUserData = async (req, res) => {
+  try {
+    const {userId} = req.body;
+    const userData = await pool.query('SELECT user_email, user_name, created_on \
+    FROM users WHERE user_id = $1' , [userId]);
+    res.status(200).json(userData.rows)
+  } catch (error) {
+    res.status(404).json(error)
+  }
+}
