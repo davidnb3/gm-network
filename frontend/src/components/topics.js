@@ -1,31 +1,27 @@
 import { Button } from "@chakra-ui/react"
 import { useState } from "react";
+import getDataFromApi from '../api/getDataFromApi';
+import postDataToApi from '../api/postDataToApi';
 
 
-export default function Topics({topics, setPosts, getPosts, authToken}) {
+export default function Topics({topics, setPosts, authToken}) {
   const [topic, setTopic ] = useState();
 
-  async function handleSetTopic(event) {
+  const handleSetTopic = (event) => {
     event.preventDefault();
-    try {
-      const response = await fetch(('http://localhost:5000/api/topics'), {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`},
-        body: JSON.stringify({topic_id: topic})
-      })
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      setPosts(data);
-    } catch (error) {
-      console.log(error);
+    const topicID = {
+      topic_id: topic
     }
+    postDataToApi('topics', '', authToken, topicID, setPosts)
+  }
+
+  const handleShowAll = () => {
+    getDataFromApi('posts', '', authToken, setPosts);
   }
 
   return(
     <> 
-      <form onSubmit={getPosts}>
+      <form onSubmit={() => handleShowAll()}>
         <Button
           type='submit'
           bg="white"

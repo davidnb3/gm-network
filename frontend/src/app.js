@@ -1,4 +1,4 @@
-import { Container, VStack } from "@chakra-ui/react"
+import { Container, VStack } from "@chakra-ui/react";
 import { useState, useEffect } from 'react';
 import Posts from './components/posts';
 import CreatePost from './components/createPost';
@@ -8,6 +8,8 @@ import SinglePost from "./components/singlePost";
 import Signup from './components/signup';
 import LogIn from './components/login';
 import useToken from './hooks/useToken';
+import Account from './components/account';
+import getDataFromApi from './api/getDataFromApi';
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,41 +22,11 @@ export default function App() {
   const {token, setToken} = useToken();
   const authToken = token?.authentication;
   const userId = token?.userId;
-  
-  const getTopics = async () => {
-    try {
-       const response = await fetch(('http://localhost:5000/api/topics'), {
-         headers: {'Authorization': `Bearer ${authToken}`}
-       });
-       const data = await response.json();
-       if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      setTopics(data);
-     } catch (error) {
-       console.log(error)
-     }
-  };
-
-  const getPosts = async () => {
-    try {
-      const response = await fetch(('http://localhost:5000/api/posts'), {
-        headers: {'Authorization': `Bearer ${authToken}`}
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      setPosts(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
-    getPosts();
-    getTopics();
-  }, [] );
+    getDataFromApi('posts', '', authToken, setPosts);
+    getDataFromApi('topics', '', authToken, setTopics);
+  }, [authToken] );
 
   if (!token) {
     return (
@@ -113,7 +85,6 @@ export default function App() {
                 <Topics
                   topics={topics}
                   setPosts={setPosts}
-                  getPosts={getPosts}
                   authToken={authToken}
                 />
               </Container>
@@ -125,6 +96,13 @@ export default function App() {
               authToken={authToken}
               userId={userId}
               topics={topics}
+            />
+          )}/>
+
+          <Route exact path='/account' render={() => (
+            <Account
+              userId={userId}
+              authToken={authToken}
             />
           )}/>
         </Switch>

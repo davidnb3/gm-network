@@ -16,6 +16,7 @@ import { useState, useEffect } from 'react';
 import Comments from './comments';
 import DeleteAlert from './deleteAlert';
 import ModifyPost from './modifyPost';
+import getDataFromApi from '../api/getDataFromApi';
 
 export default function SinglePost({authToken, userId, topics}) {
   const [singlePost, setSinglePost] = useState({});
@@ -26,36 +27,6 @@ export default function SinglePost({authToken, userId, topics}) {
   const onClose = () => setIsOpen(false)
   const {id} = useParams();
   const invalid = commentBody === '';
-
-  const getSinglePost = async () => {
-    try {
-      const response = await fetch((`http://localhost:5000/api/posts/${id}`), {
-        headers: {'Authorization': `Bearer ${authToken}`}
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      setSinglePost(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
-  const getComments = async () => {
-    try {
-      const response = await fetch((`http://localhost:5000/api/comments/${id}`), {
-        headers: {'Authorization': `Bearer ${authToken}`}
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      setComments(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleAddComment = async (event) => {
     event.preventDefault();
@@ -89,7 +60,7 @@ export default function SinglePost({authToken, userId, topics}) {
       const response = await fetch((`http://localhost:5000/api/posts/${id}`), {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`}, 
-        body: JSON.stringify(userId)
+        body: JSON.stringify({user_id: userId})
       });
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -104,9 +75,9 @@ export default function SinglePost({authToken, userId, topics}) {
   }
 
   useEffect(() => {
-    getSinglePost();
-    getComments();
-  }, [] );
+    getDataFromApi('posts', id, authToken, setSinglePost);
+    getDataFromApi('comments', id, authToken, setComments);
+  }, [id, authToken] );
 
   return (
     <>
@@ -136,7 +107,6 @@ export default function SinglePost({authToken, userId, topics}) {
             <HStack marginBottom='4px' lineHeight='1.2rem'>
               <Tooltip label='Go back' fontSize='xs'>
                 <Button
-                    bg='none'
                     p={0}
                     size='sm'
                     bg='transparent'
@@ -151,7 +121,6 @@ export default function SinglePost({authToken, userId, topics}) {
             <HStack marginBottom='4px' lineHeight='1.2rem'>
               <Tooltip label="Modify Post" fontSize="xs">
                 <Button
-                  bg='none'
                   p={0}
                   size='sm'
                   bg='transparent'
