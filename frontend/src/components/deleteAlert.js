@@ -30,7 +30,7 @@ export default function DeleteAlert({onClose, isOpen, handleDeletePost}) {
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={onClose, () => handleDeletePost()} ml={3}>
+              <Button colorScheme="red" onClick={() => handleDeletePost()} ml={3}>
                 Delete
               </Button>
             </AlertDialogFooter>

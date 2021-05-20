@@ -36,7 +36,7 @@ export default function LogIn({setToken}) {
         throw new Error(response.statusText);
       }
       setToken(data)
-      window.location = '/';
+      
     } catch (error) {
       console.log(error)
     }

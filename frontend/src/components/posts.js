@@ -28,7 +28,7 @@ export default function Posts({post, authToken, userId}) {
       const response = await fetch((`http://localhost:5000/api/${post.post_id}`), {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`}, 
-        body: JSON.stringify(userId)
+        body: JSON.stringify({user_id: userId})
       });
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -64,7 +64,6 @@ export default function Posts({post, authToken, userId}) {
               <Tooltip label="Delete Post" fontSize="xs">
                 <Button
                   as={Box}
-                  bg='none'
                   p={0}
                   size='sm'
                   bg='transparent'
