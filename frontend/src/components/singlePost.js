@@ -135,7 +135,6 @@ export default function SinglePost({authToken, userId, topics}) {
                   bg='none'
                   p={0}
                   size='sm'
-                  bg='transparent'
                   display={userId !== singlePost.user_id ? 'none' : 'flex'}
                   onClick={(event) => handleDeleteBtn(event)}
                 >
