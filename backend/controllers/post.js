@@ -63,9 +63,9 @@ exports.updatePost = async (req, res) => {
 exports.deletePost = async (req, res) => {
   try {
     const {id} = req.params;
-    const {user_id} = req.body;
+    const {userId} = req.body;
     await pool.query(
-      'DELETE FROM posts WHERE post_id = $1 AND user_id = $2', [id, user_id]
+      'DELETE FROM posts WHERE post_id = $1 AND user_id = $2', [id, userId]
     );
     res.status(200).json({message: 'Post successfully deleted!'});
   } catch (error) {
