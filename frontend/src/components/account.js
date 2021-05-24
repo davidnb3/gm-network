@@ -6,9 +6,7 @@ export default function Account({userId, authToken}) {
   const [userData, setUserData] = useState({});
   console.log(userData)
 
-  useEffect(() => {
-    postDataToApi('auth', '', authToken, {userId}, setUserData);
-  }, [userId, authToken] );
+  
 
   return (
     <div style={{
