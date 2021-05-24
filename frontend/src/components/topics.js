@@ -12,7 +12,7 @@ export default function Topics({topics, setPosts, authToken}) {
     const topicID = {
       topic_id: topic
     }
-    postDataToApi('topics', '', authToken, topicID, setPosts)
+    postDataToApi('topics', '', 'POST', authToken, topicID, setPosts)
   }
 
   const handleShowAll = () => {

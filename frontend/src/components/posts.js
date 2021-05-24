@@ -13,6 +13,7 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import { Link } from "react-router-dom";
 import { useState } from 'react';
 import DeleteAlert from './deleteAlert';
+import postDataToApi from '../api/postDataToApi';
 
 export default function Posts({post, authToken, userId}) {
   const [isOpen, setIsOpen] = useState(false)
@@ -24,18 +25,10 @@ export default function Posts({post, authToken, userId}) {
   };
 
   const handleDeletePost = async () => {
-    try {
-      const response = await fetch((`http://localhost:5000/api/${post.post_id}`), {
-        method: 'DELETE',
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`}, 
-        body: JSON.stringify({user_id: userId})
-      });
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-    } catch (error) {
-      console.log(error)
-    }
+    setIsOpen(false);
+    const postId = post.post_id;
+    postDataToApi('posts', postId, 'DELETE', authToken, {userId});
+    window.location = '/';
   }
 
   return(
