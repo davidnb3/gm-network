@@ -17,6 +17,7 @@ import Comments from './comments';
 import DeleteAlert from './deleteAlert';
 import ModifyPost from './modifyPost';
 import getDataFromApi from '../api/getDataFromApi';
+import postDataToApi from '../api/postDataToApi';
 
 export default function SinglePost({authToken, userId, topics}) {
   const [singlePost, setSinglePost] = useState({});
@@ -30,24 +31,13 @@ export default function SinglePost({authToken, userId, topics}) {
 
   const handleAddComment = async (event) => {
     event.preventDefault();
-    try {
-      const comment = {
-        user_id: userId,
-        post_id: id,
-        body: commentBody
-      };
-      const response = await fetch(('http://localhost:5000/api/comments'), {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`},
-        body: JSON.stringify(comment)
-      });
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      window.location = `/post/${id}`;
-    } catch (error) {
-      console.log(error);
-    }
+    const comment = {
+      user_id: userId,
+      post_id: id,
+      body: commentBody
+    };
+    postDataToApi('comments', '', 'POST', authToken, comment);
+    window.location.reload();
   } 
 
   const handleDeleteBtn = (event) => {
@@ -56,18 +46,9 @@ export default function SinglePost({authToken, userId, topics}) {
   };
 
   const handleDeletePost = async () => {
-    try {
-      const response = await fetch((`http://localhost:5000/api/posts/${id}`), {
-        method: 'DELETE',
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`}, 
-        body: JSON.stringify({user_id: userId})
-      });
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-    } catch (error) {
-      console.log(error)
-    }
+    setIsOpen(false);
+    postDataToApi('posts', id, 'DELETE', authToken, {userId});
+    window.location = '/';
   }
 
   const handleGoBack = () => {
@@ -147,7 +128,7 @@ export default function SinglePost({authToken, userId, topics}) {
               {singlePost.post_title}
             </Heading>
             <Text lineHeight='1.6rem'>{singlePost.post_body}</Text>
-            <form method='POST' onSubmit={() => handleAddComment()}>
+            <form method='POST' onSubmit={handleAddComment}>
               <FormControl
                 d='flex'
                 marginTop={10}

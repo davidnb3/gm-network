@@ -56,7 +56,7 @@ export default function CreatePost({topics, authToken, userId}) {
             boxShadow:"xl"
           }}
         >
-          <form method='POST' onSubmit={() => handleAddPost()}>
+          <form method='POST' onSubmit={handleAddPost}>
             <FormControl>
               <Input
                 isRequired
