@@ -33,12 +33,11 @@ exports.createComment = async (req, res) => {
 
 exports.updateComment = async (req, res) => {
   try {
-    const {body} = req.body;
-    const {id} = req.params;
+    const {body, commentId} = req.body;
     const updatedComment = await pool.query(
       'UPDATE comments SET comment_body = $1 \
       WHERE comment_id = $2 RETURNING *',
-      [body, id]
+      [body, commentId]
     );
     res.status(200).json(updatedComment.rows[0]);
   } catch (error) {
@@ -48,9 +47,9 @@ exports.updateComment = async (req, res) => {
 
 exports.deleteComment = async (req, res) => {
   try {
-    const {id} = req.params;
+    const {commentId} = req.body;
     await pool.query(
-      'DELETE FROM comments WHERE comment_id = $1', [id]
+      'DELETE FROM comments WHERE comment_id = $1', [commentId]
     );
     res.status(200).json({message: 'Comment successfully deleted!'});
   } catch (error) {
