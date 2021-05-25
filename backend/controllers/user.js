@@ -42,7 +42,6 @@ exports.login = async (req, res) => {
       );
       res.status(200).json({
         userId: user.user_id,
-        username: user.user_name,
         authentication: token,
         message: 'Logged in successfully!'
       });
@@ -54,7 +53,6 @@ exports.login = async (req, res) => {
   }
 }
 
-
 exports.getUserData = async (req, res) => {
   try {
     const {userId} = req.body;
@@ -63,5 +61,15 @@ exports.getUserData = async (req, res) => {
     res.status(200).json(userData.rows)
   } catch (error) {
     res.status(404).json(error)
+  }
+}
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const {userId} = req.body;
+    await pool.query('DELETE FROM users WHERE user_id = $1', [userId]);
+    res.status(200).json({message: 'User deleted successfully!'})
+  } catch (error) {
+    res.status(500).json(error);
   }
 }
