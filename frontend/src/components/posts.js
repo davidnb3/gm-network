@@ -12,7 +12,7 @@ import {
 import { DeleteIcon } from '@chakra-ui/icons';
 import { Link } from "react-router-dom";
 import { useState } from 'react';
-import DeleteAlert from './deleteAlert';
+import DeletePostAlert from './deletePostAlert';
 import postDataToApi from '../api/postDataToApi';
 
 export default function Posts({post, authToken, userId}) {
@@ -49,7 +49,7 @@ export default function Posts({post, authToken, userId}) {
           }}
         >
           <Container p='12px 24px 24px 24px' m={0} maxW='100%'>
-            <Flex justifyContent='space-between'>
+            <Flex justifyContent='space-between' minHeight='32px'>
               <HStack marginBottom='4px' lineHeight='1.2rem'>
                 <Badge colorScheme='purple' fontSize="0.6rem">{post.topic_name}</Badge>
                 <Text color='grey' fontSize='xs'>Posted by: {post.user_name}</Text>
@@ -72,7 +72,7 @@ export default function Posts({post, authToken, userId}) {
           </Container>
         </Flex>
       </Link>
-      <DeleteAlert onClose={onClose} isOpen={isOpen} handleDeletePost={handleDeletePost}/>
+      <DeletePostAlert onClose={onClose} isOpen={isOpen} handleDeletePost={handleDeletePost}/>
     </>
   )
 }

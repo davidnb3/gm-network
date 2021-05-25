@@ -15,7 +15,6 @@ import { useState } from 'react';
 import { Link as RouterLink } from "react-router-dom";
 
 export default function Signup() {
-  
   const  [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ username, setUsername ] = useState('');
@@ -38,6 +37,7 @@ export default function Signup() {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
+      window.location = '/';
     } catch (error) {
       console.log(error)
     }

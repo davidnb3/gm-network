@@ -12,7 +12,6 @@ export default function Navbar() {
   const handleLogout = () => {
     sessionStorage.removeItem('token');
     window.location = '/';
-    console.log('ok')
   }
 
   return (
