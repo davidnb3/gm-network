@@ -1,12 +1,26 @@
-import { Container } from "@chakra-ui/react"
+import {
+  Container,
+  Heading,
+  Text,
+  Tooltip,
+  Button
+} from "@chakra-ui/react";
 import { useState, useEffect } from 'react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 import postDataToApi from '../api/postDataToApi';
 
 export default function Account({userId, authToken}) {
   const [userData, setUserData] = useState({});
-  console.log(userData)
 
-  
+  const handleDeleteUser = () => {
+    postDataToApi('auth', '', 'DELETE', authToken, {userId});
+    sessionStorage.removeItem('token');
+    window.location = '/';
+  }
+
+  useEffect(() => {
+    postDataToApi('auth', '', 'POST', authToken, {userId}, setUserData);
+  }, [userId, authToken] );
 
   return (
     <div style={{
@@ -26,7 +40,27 @@ export default function Account({userId, authToken}) {
           borderWidth='1px'
           borderRadius='5px'
         >
-          <i className="far fa-user-circle fa-8x" style={{color: '#805AD5'}} ></i>
+          <Container m={0} p={0}>
+            <Tooltip label='Go back' fontSize='xs'>
+              <Button
+                  p={0}
+                  size='sm'
+                  bg='transparent'
+                  onClick={() => window.location = '/'}
+                >
+                <ArrowBackIcon boxSize='1.3em'/>
+              </Button>
+            </Tooltip>
+          </Container>
+          <Container m={0} p={0} textAlign='center' lineHeight='20px'>
+            <i className="far fa-user-circle fa-8x" style={{color: '#805AD5'}} ></i>
+            <Heading size='md'>{userData[0]?.user_name}</Heading>
+            <Text>{userData[0]?.user_email}</Text>
+            <Text>{userData[0]?.created_on}</Text>
+            <Button colorScheme="red" onClick={handleDeleteUser}>
+              Delete Account
+            </Button>
+          </Container>
         </Container>
     </div>
   )
