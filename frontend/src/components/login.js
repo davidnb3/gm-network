@@ -19,7 +19,7 @@ export default function LogIn({setToken}) {
   const [ showPassword, setShowPassword ] = useState(false);
   const isInvalid = password === '' || username === '';
   
-  async function handleSignIn(event) {
+  async function handleLogin(event) {
     event.preventDefault();
     try {
       const user = {
@@ -36,7 +36,6 @@ export default function LogIn({setToken}) {
         throw new Error(response.statusText);
       }
       setToken(data)
-      
     } catch (error) {
       console.log(error)
     }
@@ -46,7 +45,7 @@ export default function LogIn({setToken}) {
     <>
       <Center h='100vh'>
         <Container maxW='md' bg="white" p={8} borderRadius='5px'>
-          <form method='POST' onSubmit={handleSignIn}>
+          <form method='POST' onSubmit={handleLogin}>
             <VStack spacing={6}>
               <FormControl isRequired>
                 <FormLabel htmlFor='username'>User Name</FormLabel>
