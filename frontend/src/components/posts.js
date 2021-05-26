@@ -12,23 +12,28 @@ import {
 import { DeleteIcon } from '@chakra-ui/icons';
 import { Link } from "react-router-dom";
 import { useState } from 'react';
-import DeletePostAlert from './deletePostAlert';
+import DeleteAlert from './deleteAlert';
 import postDataToApi from '../api/postDataToApi';
 
 export default function Posts({post, authToken, userId}) {
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
+  const postId = post.post_id;
+  const [checkDeleteBtn, setCheckDeleteBtn] = useState('');
+  
 
   const handleDeleteBtn = (event) => {
     event.preventDefault();
+    setCheckDeleteBtn('post');
     setIsOpen(true);
   };
-
-  const handleDeletePost = async () => {
-    setIsOpen(false);
-    const postId = post.post_id;
-    postDataToApi('posts', postId, 'DELETE', authToken, {userId});
-    window.location = '/';
+  
+  const handleDelete = () => {
+    if (checkDeleteBtn === 'post') {
+      setIsOpen(false);
+      postDataToApi('posts', postId, 'DELETE', authToken, {userId});
+      window.location = '/';
+    }
   }
 
   return(
@@ -68,11 +73,22 @@ export default function Posts({post, authToken, userId}) {
               </Tooltip>
             </Flex>
             <Heading size='md' fontWeight='500' lineHeight='2.2rem'> {post.post_title} </Heading>
-            <Text lineHeight='1.6rem'> {post.post_body.substring(0,250)} ...</Text>
+            <Text lineHeight='1.6rem'> {
+              post.post_body.length >= 250 ? 
+              post.post_body.substring(0,250) + ' ' + '...' : 
+              post.post_body
+            } 
+              </Text>
           </Container>
         </Flex>
       </Link>
-      <DeletePostAlert onClose={onClose} isOpen={isOpen} handleDeletePost={handleDeletePost}/>
+      
+      <DeleteAlert
+        onClose={onClose}
+        isOpen={isOpen}
+        handleDelete={handleDelete}
+        checkDeleteBtn={checkDeleteBtn}
+        />
     </>
   )
 }

@@ -14,20 +14,34 @@ import { useParams } from "react-router-dom";
 import { DeleteIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { useState, useEffect } from 'react';
 import Comments from './comments';
-import DeletePostAlert from './deletePostAlert';
+import DeleteAlert from './deleteAlert';
 import ModifyPost from './modifyPost';
 import getDataFromApi from '../api/getDataFromApi';
 import postDataToApi from '../api/postDataToApi';
 
 export default function SinglePost({authToken, userId, topics}) {
+  const {id} = useParams();
   const [singlePost, setSinglePost] = useState({});
   const [commentBody, setCommentBody] = useState('');
   const [comments, setComments] = useState([]);
   const [modifyPost, setModifyPost] = useState('');
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
-  const {id} = useParams();
-  const invalid = commentBody === '';
+  const [checkDeleteBtn, setCheckDeleteBtn] = useState('');
+  
+  const handleDeleteBtn = (event) => {
+    event.preventDefault();
+    setCheckDeleteBtn('post');
+    setIsOpen(true);
+  };
+
+  const handleDelete = () => {
+    if (checkDeleteBtn === 'post') {
+      setIsOpen(false);
+      postDataToApi('posts', id, 'DELETE', authToken, {userId});
+      window.location = '/';
+    }
+  }
 
   const handleAddComment = async (event) => {
     event.preventDefault();
@@ -39,17 +53,6 @@ export default function SinglePost({authToken, userId, topics}) {
     postDataToApi('comments', '', 'POST', authToken, comment);
     window.location.reload();
   };
-
-  const handleDeleteBtn = (event) => {
-    event.preventDefault();
-    setIsOpen(true);
-  };
-
-  const handleDeletePost = async () => {
-    setIsOpen(false);
-    postDataToApi('posts', id, 'DELETE', authToken, {userId});
-    window.location = '/';
-  }
 
   useEffect(() => {
     getDataFromApi('posts', id, authToken, setSinglePost);
@@ -68,7 +71,7 @@ export default function SinglePost({authToken, userId, topics}) {
         borderColor='#CBD5E0'
         borderWidth='1px'
         borderRadius='5px'
-      >  
+      >
         <Flex justifyContent='space-between'>
           <HStack marginBottom='4px' lineHeight='1.2rem'>
             <Tooltip label='Go back' fontSize='xs'>
@@ -147,9 +150,12 @@ export default function SinglePost({authToken, userId, topics}) {
                   />
                   <Button
                     type='submit'
-                    disabled={invalid}
+                    disabled={commentBody === ''}
                     w='106px'
-                    colorScheme='purple'>Comment</Button>
+                    colorScheme='purple'
+                  >
+                    Comment
+                  </Button>
               </FormControl>
             </form>
           </>
@@ -166,10 +172,11 @@ export default function SinglePost({authToken, userId, topics}) {
           ))}
         </VStack>
 
-        <DeletePostAlert
+        <DeleteAlert
           onClose={onClose}
           isOpen={isOpen}
-          handleDeletePost={handleDeletePost}
+          handleDelete={handleDelete}
+          checkDeleteBtn={checkDeleteBtn}
         />
 
       </Container>

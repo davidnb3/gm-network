@@ -1,7 +1,7 @@
 import { Box, Text, HStack, Flex, Button, Tooltip, Textarea } from "@chakra-ui/react"
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
-import DeleteCommentAlert from './deleteCommentAlert';
+import DeleteAlert from './deleteAlert';
 import postDataToApi from '../api/postDataToApi';
 
 export default function Comments({comment, userId, authToken}) {
@@ -10,19 +10,23 @@ export default function Comments({comment, userId, authToken}) {
   const [modifyComment, setModifyComment] = useState('');
   const [commentText, setCommentText] = useState(comment.comment_body);
   const commentId = comment.comment_id;
+  const [checkDeleteBtn, setCheckDeleteBtn] = useState('');
 
   const handleDeleteBtn = (event) => {
     event.preventDefault();
+    setCheckDeleteBtn('comment');
     setIsOpen(true);
   };
 
-  const handleDeleteComment = () => {
-    setIsOpen(false);
-    postDataToApi('comments', '', 'DELETE', authToken, {commentId});
-    window.location.reload();
+  const handleDelete = () => {
+    if (checkDeleteBtn === 'comment') {
+      setIsOpen(false);
+      postDataToApi('comments', '', 'DELETE', authToken, {commentId});
+      window.location.reload();
+    }
   }
 
-  const handleSubmit = () => {
+  const handleUpdateComment = () => {
     const comment = {
       commentId,
       body: commentText
@@ -76,7 +80,7 @@ export default function Comments({comment, userId, authToken}) {
         )}
 
         {modifyComment === 'modify-comment' && (
-          <form method='PUT' onSubmit={() => handleSubmit()}>
+          <form method='PUT' onSubmit={() => handleUpdateComment()}>
             <Textarea
               value={commentText}
               placeholder='Text'
@@ -93,10 +97,11 @@ export default function Comments({comment, userId, authToken}) {
         )}
 
       </Box>
-      <DeleteCommentAlert
+      <DeleteAlert
         onClose={onClose}
         isOpen={isOpen}
-        handleDeleteComment={handleDeleteComment}
+        handleDelete={handleDelete}
+        checkDeleteBtn={checkDeleteBtn}
       />
     </>
   )
