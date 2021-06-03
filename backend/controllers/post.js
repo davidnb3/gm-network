@@ -14,6 +14,19 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
+exports.getReadPosts = async (req, res) => {
+  try {
+    const {user} = req.params;
+    const readPosts = await pool.query(
+      'SELECT post_id FROM userpostsread \
+      WHERE user_id = $1', [user]
+    );
+    res.status(200).json(readPosts.rows);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+};
+
 exports.getOnePost = async (req, res) => {
   try {
     const {id} = req.params;
@@ -40,6 +53,21 @@ exports.createPost = async (req, res) => {
       [user_id, topic_id, title, body, new Date()]
     );
     res.status(200).json(newPost.rows[0]);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+exports.checkPostsRead = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const {userId} = req.body;
+    const postsRead = await pool.query(
+      'INSERT INTO userpostsread (post_id, user_id) \
+      VALUES ($1, $2) RETURNING *',
+      [id, userId]
+    );
+    res.status(200).json(postsRead.rows);
   } catch (error) {
     res.status(500).json(error);
   }

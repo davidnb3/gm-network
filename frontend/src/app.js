@@ -22,11 +22,13 @@ export default function App() {
   const {token, setToken} = useToken();
   const authToken = token?.authentication;
   const userId = token?.userId;
+  const [readPosts, setReadPosts] = useState([]);
 
   useEffect(() => {
     getDataFromApi('posts', '', authToken, setPosts);
     getDataFromApi('topics', '', authToken, setTopics);
-  }, [authToken] );
+    getDataFromApi('posts/postsread', userId, authToken, setReadPosts);
+  }, [authToken, userId] );
 
   if (!token) {
     return (
@@ -76,6 +78,7 @@ export default function App() {
                       authToken={authToken}
                       setPosts={setPosts}
                       userId={userId}
+                      readPosts={readPosts}
                       key={post.post_id}
                     />
                   ))}

@@ -15,32 +15,44 @@ import { useState } from 'react';
 import DeleteAlert from './deleteAlert';
 import postDataToApi from '../api/postDataToApi';
 
-export default function Posts({post, authToken, userId}) {
+export default function Posts({post, authToken, userId, readPosts}) {
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
   const postId = post.post_id;
-  const [checkDeleteBtn, setCheckDeleteBtn] = useState('');
-  
+  const [deleteBtn, setDeleteBtn] = useState('');
+
+  const checkOpacity = () => {
+    if (readPosts.find(id => id.post_id === postId)) {
+      return '0.5'
+    } else {
+      return '1'
+    }
+  }
 
   const handleDeleteBtn = (event) => {
     event.preventDefault();
-    setCheckDeleteBtn('post');
+    setDeleteBtn('post');
     setIsOpen(true);
   };
   
   const handleDelete = () => {
-    if (checkDeleteBtn === 'post') {
+    if (deleteBtn === 'post') {
       setIsOpen(false);
       postDataToApi('posts', postId, 'DELETE', authToken, {userId});
       window.location = '/';
     }
-  }
+  };
+
+  const handlePostsRead = () => {
+    postDataToApi('posts', postId, 'POST', authToken, {userId});
+  };
 
   return(
     <>  
       <Link
         to={`/post/${post.post_id}`}
         style={{width: '100%'}}
+        onClick={handlePostsRead}
       >
         <Flex
           bg="white"
@@ -49,6 +61,7 @@ export default function Posts({post, authToken, userId}) {
           borderWidth='1px'
           borderRadius='5px'
           transition='0.4s'
+          opacity={checkOpacity}
           _hover={{
             boxShadow:"xl"
           }}
@@ -66,7 +79,7 @@ export default function Posts({post, authToken, userId}) {
                   size='sm'
                   bg='transparent'
                   display={userId !== post.user_id ? 'none' : 'flex'}
-                  onClick={(event) => handleDeleteBtn(event)}
+                  onClick={handleDeleteBtn}
                 >
                   <DeleteIcon color='red.600'/>
                 </Button>
@@ -82,12 +95,12 @@ export default function Posts({post, authToken, userId}) {
           </Container>
         </Flex>
       </Link>
-      
+
       <DeleteAlert
         onClose={onClose}
         isOpen={isOpen}
         handleDelete={handleDelete}
-        checkDeleteBtn={checkDeleteBtn}
+        deleteBtn={deleteBtn}
         />
     </>
   )
