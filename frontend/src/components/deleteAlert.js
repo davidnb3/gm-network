@@ -7,11 +7,29 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
 } from "@chakra-ui/react"
-import { useRef } from 'react';
-import postDataToApi from '../api/postDataToApi';
+import { useRef, useState, useEffect } from 'react';
 
-export default function DeleteAlert({onClose, isOpen, checkDeleteBtn, handleDelete}) {
+export default function DeleteAlert({onClose, isOpen, deleteBtn, handleDelete}) {
   const cancelRef = useRef()
+  const [alertMessage, setAlertMessage] = useState('');
+
+  
+  const changeAlertMessage = () => {
+    if (deleteBtn === 'post') {
+      setAlertMessage('Delete Post')
+    };
+    if (deleteBtn === 'comment') {
+      setAlertMessage('Delete Comment')
+    };
+    if (deleteBtn === 'account') {
+      setAlertMessage('Delete Account')
+    };
+  }
+
+  useEffect(() => {
+    changeAlertMessage();
+  });
+
 
   return (
     <AlertDialog
@@ -22,7 +40,7 @@ export default function DeleteAlert({onClose, isOpen, checkDeleteBtn, handleDele
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              {checkDeleteBtn === 'post' ? 'Delete Post' : 'Delete Comment'}
+              {alertMessage}
             </AlertDialogHeader>
             <AlertDialogBody>
               Are you sure? You can't undo this action afterwards.
@@ -31,13 +49,9 @@ export default function DeleteAlert({onClose, isOpen, checkDeleteBtn, handleDele
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-
-              
               <Button colorScheme="red" onClick={() => handleDelete()} ml={3}>
                 Delete
               </Button>
-            
-
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialogOverlay>

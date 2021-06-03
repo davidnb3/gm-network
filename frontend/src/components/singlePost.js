@@ -27,23 +27,23 @@ export default function SinglePost({authToken, userId, topics}) {
   const [modifyPost, setModifyPost] = useState('');
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
-  const [checkDeleteBtn, setCheckDeleteBtn] = useState('');
+  const [deleteBtn, setdeleteBtn] = useState('');
   
   const handleDeleteBtn = (event) => {
     event.preventDefault();
-    setCheckDeleteBtn('post');
+    setdeleteBtn('post');
     setIsOpen(true);
   };
 
   const handleDelete = () => {
-    if (checkDeleteBtn === 'post') {
+    if (deleteBtn === 'post') {
       setIsOpen(false);
       postDataToApi('posts', id, 'DELETE', authToken, {userId});
       window.location = '/';
     }
   }
 
-  const handleAddComment = async (event) => {
+  const handleAddComment = (event) => {
     event.preventDefault();
     const comment = {
       user_id: userId,
@@ -118,7 +118,6 @@ export default function SinglePost({authToken, userId, topics}) {
             singlePost={singlePost}
             topics={topics}
             setModifyPost={setModifyPost}
-            handleDeleteBtn={handleDeleteBtn}
             authToken={authToken}
             id={id}
           />
@@ -176,7 +175,7 @@ export default function SinglePost({authToken, userId, topics}) {
           onClose={onClose}
           isOpen={isOpen}
           handleDelete={handleDelete}
-          checkDeleteBtn={checkDeleteBtn}
+          deleteBtn={deleteBtn}
         />
 
       </Container>

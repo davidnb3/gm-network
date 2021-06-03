@@ -10,16 +10,16 @@ export default function Comments({comment, userId, authToken}) {
   const [modifyComment, setModifyComment] = useState('');
   const [commentText, setCommentText] = useState(comment.comment_body);
   const commentId = comment.comment_id;
-  const [checkDeleteBtn, setCheckDeleteBtn] = useState('');
+  const [deleteBtn, setdeleteBtn] = useState('');
 
   const handleDeleteBtn = (event) => {
     event.preventDefault();
-    setCheckDeleteBtn('comment');
+    setdeleteBtn('comment');
     setIsOpen(true);
   };
 
   const handleDelete = () => {
-    if (checkDeleteBtn === 'comment') {
+    if (deleteBtn === 'comment') {
       setIsOpen(false);
       postDataToApi('comments', '', 'DELETE', authToken, {commentId});
       window.location.reload();
@@ -101,7 +101,7 @@ export default function Comments({comment, userId, authToken}) {
         onClose={onClose}
         isOpen={isOpen}
         handleDelete={handleDelete}
-        checkDeleteBtn={checkDeleteBtn}
+        deleteBtn={deleteBtn}
       />
     </>
   )
