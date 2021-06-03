@@ -7,7 +7,9 @@ export default async function getDataFromApi(endpoint, id, authtoken, setState) 
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    setState(data);
+    if (setState) {
+      setState(data);
+    }
   } catch (error) {
     console.log(error);
   }
