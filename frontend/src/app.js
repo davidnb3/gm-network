@@ -54,18 +54,21 @@ export default function App() {
 
   return (
     <Router>
-      <div style={{
-        backgroundColor:'#dbdae8',
-        minHeight: '100vh',
-        height: '100%',
-        paddingBottom: '20px'
-        }}
+      <Navbar />
+      <Container 
+        backgroundColor='#dbdae8'
+        minHeight='100vh'
+        height='100%'
+        p={[4, 6]}
+        paddingBottom='20px'
+        maxW='100%'
+        m={0}
+        centerContent
       >
-        <Navbar />
         <Switch>
           <Route exact path='/'>
-            <Container maxW="container.lg" d='flex' marginTop={6}>
-              <Container maxW="container.md" p={0} m='0 20px 0 20px'>
+            <Container maxW="container.lg" d='flex' p={0}>
+              <Container maxW="container.md" p={0} m={0}>
                 <CreatePost
                   topics={topics}
                   authToken={authToken}
@@ -84,7 +87,12 @@ export default function App() {
                   ))}
                 </VStack>
               </Container>
-              <Container flex='1' maxW="container.sm" p={0}>
+              <Container
+                flex='1'
+                p={0}
+                display={['none', 'none', 'block']}
+                marginLeft={4}
+              >
                 <Topics
                   topics={topics}
                   setPosts={setPosts}
@@ -109,7 +117,7 @@ export default function App() {
             />
           )}/>
         </Switch>
-      </div>
+      </Container>
     </Router>
   );
 };
