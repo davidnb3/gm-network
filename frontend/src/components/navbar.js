@@ -1,6 +1,5 @@
 import {
   Box,
-  Container,
   Flex,
   Button,
   HStack 
@@ -15,21 +14,19 @@ export default function Navbar() {
   }
 
   return (
-    <Box position="sticky" top={0} p={2} bg="gray.100" zIndex={1}>
-      <Container maxW="container.lg">
-        <Flex justifyContent="flex-end" w="100%" position="sticky" top={0}>
-          <HStack spacing={4}>
-            <Link to='/account'>
-              <Button minWidth='95px' colorScheme="purple">
-                Account
-              </Button>
-            </Link>
-            <Button minWidth='95px' colorScheme="purple" onClick={() => handleLogout()}>
-              Logout
+    <Box position="sticky" top={0} p={[4, 6]} bg="gray.100" zIndex={1}>
+      <Flex justifyContent="flex-end" w="100%" position="sticky" top={0}>
+        <HStack spacing={4}>
+          <Link to='/account'>
+            <Button minWidth='95px' colorScheme="purple">
+              Account
             </Button>
-          </HStack>
-        </Flex>
-      </Container>
+          </Link>
+          <Button minWidth='95px' colorScheme="purple" onClick={() => handleLogout()}>
+            Logout
+          </Button>
+        </HStack>
+      </Flex>
     </Box>
   )
 }
