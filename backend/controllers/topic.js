@@ -3,7 +3,7 @@ const pool = require('../middleware/db');
 exports.getAllTopics = async (req, res) => {
   try {
     const allTopics = await pool.query(
-      'SELECT * FROM topics'
+      'SELECT * FROM topics ORDER BY topic_id ASC'
     );
     res.status(200).json(allTopics.rows);
    } catch (error) {
