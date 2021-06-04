@@ -21,13 +21,19 @@ export default function Posts({post, authToken, userId, readPosts}) {
   const postId = post.post_id;
   const [deleteBtn, setDeleteBtn] = useState('');
 
-  const checkOpacity = () => {
+  const handlePostsRead = () => {
+    if (!readPosts.find(id => id.post_id === postId)) {
+      postDataToApi('posts', postId, 'POST', authToken, {userId});
+    }
+  };
+
+  const setOpacity = () => {
     if (readPosts.find(id => id.post_id === postId)) {
-      return '0.5'
+      return '0.6'
     } else {
       return '1'
     }
-  }
+  };
 
   const handleDeleteBtn = (event) => {
     event.preventDefault();
@@ -41,10 +47,6 @@ export default function Posts({post, authToken, userId, readPosts}) {
       postDataToApi('posts', postId, 'DELETE', authToken, {userId});
       window.location = '/';
     }
-  };
-
-  const handlePostsRead = () => {
-    postDataToApi('posts', postId, 'POST', authToken, {userId});
   };
 
   return(
@@ -61,7 +63,7 @@ export default function Posts({post, authToken, userId, readPosts}) {
           borderWidth='1px'
           borderRadius='5px'
           transition='0.4s'
-          opacity={checkOpacity}
+          opacity={setOpacity}
           _hover={{
             boxShadow:"xl"
           }}
@@ -85,13 +87,20 @@ export default function Posts({post, authToken, userId, readPosts}) {
                 </Button>
               </Tooltip>
             </Flex>
-            <Heading size='md' fontWeight='500' lineHeight='2.2rem'> {post.post_title} </Heading>
-            <Text lineHeight='1.6rem'> {
-              post.post_body.length >= 250 ? 
-              post.post_body.substring(0,250) + ' ' + '...' : 
-              post.post_body
-            } 
-              </Text>
+            <Heading
+              fontSize='xl'
+              fontWeight='500'
+              lineHeight='2.2rem'
+            > 
+              {post.post_title} 
+            </Heading>
+            <Text
+              fontSize='md'
+              lineHeight='1.6rem'
+              noOfLines={[3, 3, 4]}
+            >
+              {post.post_body}
+            </Text>
           </Container>
         </Flex>
       </Link>
