@@ -1,4 +1,4 @@
-import { Box, Text, HStack, Flex, Button, Tooltip, Textarea } from "@chakra-ui/react"
+import { Box, Text, VStack, HStack, Flex, Button, Tooltip, Textarea } from "@chakra-ui/react"
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import DeleteAlert from './deleteAlert';
@@ -87,12 +87,13 @@ export default function Comments({comment, userId, authToken}) {
               focusBorderColor="#E9D8FD"
               borderWidth='1px'
               borderColor='gray.200'
+              marginBottom={2.5}
               onChange={({target}) => setCommentText(target.value)}
             />
-            <HStack spacing={4}>
-              <Button colorScheme='purple' type='submit' w={92}>Update</Button>
-              <Button type='button' w={92} onClick={() => setModifyComment('')}>Cancel</Button>
-            </HStack>
+            <VStack spacing={4}>
+              <Button colorScheme='purple' type='submit' w='100%'>Update</Button>
+              <Button type='button' w='100%' onClick={() => setModifyComment('')}>Cancel</Button>
+            </VStack>
           </form>
         )}
 

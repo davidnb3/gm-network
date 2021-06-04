@@ -1,5 +1,5 @@
 import {
-  Container,
+  Box,
   Heading,
   FormControl,
   Textarea,
@@ -61,12 +61,11 @@ export default function SinglePost({authToken, userId, topics}) {
 
   return (
     <>
-      <Container
+      <Box
         maxW="container.md"
-        marginTop={6}
         bg="white"
         w="100%"
-        p={6}
+        p={[4, 6]}
         pt={4}
         borderColor='#CBD5E0'
         borderWidth='1px'
@@ -130,31 +129,27 @@ export default function SinglePost({authToken, userId, topics}) {
             </Heading>
             <Text lineHeight='1.6rem'>{singlePost.post_body}</Text>
             <form method='POST' onSubmit={handleAddComment}>
-              <FormControl
-                d='flex'
-                marginTop={10}
-                alignItems='flex-end'
-              >
+              <FormControl marginTop={10}>
                 <Textarea
-                    isRequired
-                    name='comment'
-                    value={commentBody}
-                    type='text'
-                    placeholder='Add a comment...'
-                    focusBorderColor="#E9D8FD"
-                    autoComplete='off'
-                    marginRight={4}
-                    h='130px'
-                    onChange={({target}) => setCommentBody(target.value)}
-                  />
-                  <Button
-                    type='submit'
-                    disabled={commentBody === ''}
-                    w='106px'
-                    colorScheme='purple'
-                  >
-                    Comment
-                  </Button>
+                  isRequired
+                  name='comment'
+                  value={commentBody}
+                  type='text'
+                  placeholder='Add a comment...'
+                  focusBorderColor="#E9D8FD"
+                  autoComplete='off'
+                  h='130px'
+                  marginBottom={4}
+                  onChange={({target}) => setCommentBody(target.value)}
+                />
+                <Button
+                  type='submit'
+                  disabled={commentBody === ''}
+                  w='100%'
+                  colorScheme='purple'
+                >
+                  Comment
+                </Button>
               </FormControl>
             </form>
           </>
@@ -178,7 +173,7 @@ export default function SinglePost({authToken, userId, topics}) {
           deleteBtn={deleteBtn}
         />
 
-      </Container>
+      </Box>
     </>
   )
 };

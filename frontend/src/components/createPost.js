@@ -7,6 +7,7 @@ import {Box,
   Textarea,
   Button,
   HStack,
+  Select
 } from "@chakra-ui/react";
 
 export default function CreatePost({topics, authToken, userId}) {
@@ -75,34 +76,33 @@ export default function CreatePost({topics, authToken, userId}) {
                   name='text'
                   value={text}
                   placeholder='Text (optional)'
-                  marginTop={2}
+                  marginTop={4}
+                  marginBottom={2.5}
                   h='130px'
                   focusBorderColor="#E9D8FD"
                   borderWidth='1px'
                   borderColor='gray.200'
                   onChange={({target}) => setText(target.value)}
                 />
-                <HStack spacing={4} marginBottom={2} marginTop={1}>
+                <Select
+                  placeholder='Select Topic'
+                  onChange={({target}) => setSelectTopic(target.value)}
+                  marginBottom={4}
+                >
                   {topics.map((topic) => (
-                    <Button
+                    <option
                       key={topic.topic_id}
-                      id={topic.topic_id}
                       value={topic.topic_id}
-                      type='button'
-                      colorScheme="purple"
-                      size="xs"
-                      variant='outline'
-                      onClick={({target}) => setSelectTopic(target.value)}
                     >
                       {topic.topic_name}
-                    </Button>
-                  ))};
-                </HStack>
+                    </option>
+                  ))}
+                </Select>
                 <Button
                   colorScheme='purple'
                   type='submit'
                   disabled={invalid}
-                  w={92}
+                  w='100%'
                 >
                   Post</Button>
               </Collapse>

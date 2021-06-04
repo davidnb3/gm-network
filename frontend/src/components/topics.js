@@ -1,4 +1,7 @@
-import { Button } from "@chakra-ui/react"
+import {
+  Button,
+  useMediaQuery
+} from "@chakra-ui/react"
 import { useState } from "react";
 import getDataFromApi from '../api/getDataFromApi';
 import postDataToApi from '../api/postDataToApi';
@@ -6,6 +9,7 @@ import postDataToApi from '../api/postDataToApi';
 
 export default function Topics({topics, setPosts, authToken}) {
   const [topic, setTopic ] = useState();
+  const [windowSmallerThan900] = useMediaQuery("(max-width: 900px)")
 
   const handleSetTopic = (event) => {
     event.preventDefault();
@@ -20,27 +24,30 @@ export default function Topics({topics, setPosts, authToken}) {
   }
 
   return(
-    <> 
-      <form onSubmit={() => handleShowAll()}>
-        <Button
-          type='submit'
-          bg="white"
-          fontWeight='normal'
-          variant='outline'
-          w="100%"
-          h='48px'
-          p={4}
-          borderRadius='5px'
-          border="2px"
-          borderColor="purple.300"
-          marginBottom={2}
-          _hover={{
-            boxShadow: 'lg'
-          }}
-        >
-              Show All
-        </Button>
-      </form>
+    <>
+      <Button
+        type='button'
+        bg="white"
+        fontWeight='normal'
+        fontSize={windowSmallerThan900 ? 'sm' : 'md'}
+        variant='outline'
+        w="100%"
+        h='48px'
+        p={4}
+        colorScheme='purple'
+        color='black'
+        borderRadius='5px'
+        border="2px"
+        borderColor="purple.400"
+        marginBottom={2}
+        onClick={handleShowAll}
+        _hover={{
+          boxShadow: 'lg',
+          color: 'purple.600'
+        }}
+      >
+            Show All
+      </Button>
       <form onSubmit={handleSetTopic} >
         {topics.map((topic) => (
           <Button
@@ -49,16 +56,20 @@ export default function Topics({topics, setPosts, authToken}) {
             value={topic.topic_id}
             bg="white"
             fontWeight='normal'
+            fontSize={windowSmallerThan900 ? 'sm' : 'md'}
             variant='outline'
-            w="100%"
+            w='100%'
             h='48px'
             p={4}
+            colorScheme='purple'
+            color='black'
             borderRadius='5px'
             border="2px"
-            borderColor="purple.300"
+            borderColor="purple.400"
             marginBottom={2}
             _hover={{
-              boxShadow: 'lg'
+              boxShadow: 'lg',
+              color: 'purple.600'
             }}
             onClick={({target}) => setTopic(target.value)}
           >
