@@ -81,7 +81,7 @@ export default function ModifyPost({singlePost, topics, authToken, id, setModify
             type='button'
             w='100%'
             fontSize={['sm', 'md']}
-            onClick={() => setModifyPost('')}
+            onClick={() => setModifyPost(false)}
           >
             Cancel
           </Button>

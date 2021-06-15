@@ -4,7 +4,8 @@ import {
   Text,
   Tooltip,
   Button,
-  Avatar
+  Avatar,
+  VStack
 } from "@chakra-ui/react";
 import { useState, useEffect } from 'react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
@@ -66,13 +67,25 @@ export default function Account({userId, authToken}) {
         textAlign='center'
         lineHeight='20px'
       >
-        <Avatar name={userData[0]?.user_name} size='2xl' />
-        <Heading size='md'>{userData[0]?.user_name}</Heading>
-        <Text>{userData[0]?.user_email}</Text>
-        <Text>{userData[0]?.created_on}</Text>
-        <Button colorScheme="red" onClick={handleDeleteBtn}>
-          Delete Account
-        </Button>
+        <VStack spacing={4}>
+          <Avatar name={userData[0]?.user_name} size='2xl'/>
+          <Heading fontSize={['lg' ,'xl']}>
+            {userData[0]?.user_name}
+          </Heading>
+          <Text fontSize={['sm', 'md']}>
+            {userData[0]?.user_email}
+          </Text>
+          <Text fontSize={['sm', 'md']}>
+            Created on: {userData[0]?.created_on.slice(0, 10)}
+          </Text>
+          <Button
+            colorScheme="red"
+            fontSize={['sm', 'md']}
+            onClick={handleDeleteBtn}
+          >
+            Delete Account
+          </Button>
+        </VStack>
       </Container>
       
       <DeleteAlert

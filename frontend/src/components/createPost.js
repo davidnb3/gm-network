@@ -8,6 +8,7 @@ import {Box,
   Button,
   Select,
 } from "@chakra-ui/react";
+import postDataToApi from "../api/postDataToApi";
 
 export default function CreatePost({topics, authToken, userId}) {
   const { isOpen, onOpen } = useDisclosure();
@@ -16,27 +17,16 @@ export default function CreatePost({topics, authToken, userId}) {
   const [selectTopic, setSelectTopic] = useState();
   const invalid = title === '' || selectTopic === undefined;
 
-  const handleAddPost = async (event) => {
+  const handleAddPost = (event) => {
     event.preventDefault();
-    try {
-      const post = {
-        user_id: userId,
-        topic_id: selectTopic,
-        title: title,
-        body: text
-      };
-      const response = await fetch(('http://localhost:5000/api/posts'), {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`}, 
-        body: JSON.stringify(post)
-      });
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      window.location = '/';
-    } catch (error) {
-      console.log(error);
-    }
+    const post = {
+      user_id: userId,
+      topic_id: selectTopic,
+      title: title,
+      body: text
+    };
+    postDataToApi('posts', '', 'POST', authToken, post);
+    window.location = '/';
     setTitle('');
     setText('');
   }

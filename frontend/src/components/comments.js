@@ -17,7 +17,7 @@ import postDataToApi from '../api/postDataToApi';
 export default function Comments({comment, userId, authToken}) {
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
-  const [modifyComment, setModifyComment] = useState('');
+  const [modifyComment, setModifyComment] = useState(false);
   const [commentText, setCommentText] = useState(comment.comment_body);
   const commentId = comment.comment_id;
   const [deleteBtn, setdeleteBtn] = useState('');
@@ -58,11 +58,19 @@ export default function Comments({comment, userId, authToken}) {
         borderWidth='1px'
         borderRadius='5px'
       >
-        <Flex justify='space-between' align='center' mb={2}>
-        <Text color='grey' fontSize={['0.70rem', '0.75rem']}>
+        <Flex
+          justify='space-between'
+          align='center'
+          mb={2}
+        >
+          <Text
+            color='grey'
+            fontSize={['0.70rem', '0.75rem']}
+          >
             {windowSmallerThan520 ? '' : 'Posted by: '}
             {comment.user_name}
           </Text>
+
           <HStack>
             <Tooltip label="Modify Comment" fontSize="xs">
               <Button
@@ -70,7 +78,7 @@ export default function Comments({comment, userId, authToken}) {
                 size={windowSmallerThan520 ? 'xs' : 'sm'}
                 bg='transparent'
                 display={userId !== comment.user_id ? 'none' : 'block'}
-                onClick={modifyComment === '' ? () => setModifyComment('modify-comment') : () => setModifyComment('')}
+                onClick={modifyComment === false ? () => setModifyComment(true) : () => setModifyComment(false)}
               >
                 <EditIcon color='purple.500'/>
               </Button>
@@ -89,11 +97,11 @@ export default function Comments({comment, userId, authToken}) {
           </HStack>
         </Flex>
 
-        {modifyComment === '' && (
+        {modifyComment === false && (
           <Text fontSize={['sm', 'md']}> {comment.comment_body} </Text>
         )}
 
-        {modifyComment === 'modify-comment' && (
+        {modifyComment === true && (
           <form method='PUT' onSubmit={() => handleUpdateComment()}>
             <Textarea
               value={commentText}
@@ -105,14 +113,29 @@ export default function Comments({comment, userId, authToken}) {
               marginBottom={2.5}
               onChange={({target}) => setCommentText(target.value)}
             />
+
             <VStack spacing={4}>
-              <Button colorScheme='purple' type='submit' w='100%' fontSize={['sm', 'md']}>Update</Button>
-              <Button type='button' w='100%' fontSize={['sm', 'md']} onClick={() => setModifyComment('')}>Cancel</Button>
+              <Button
+                colorScheme='purple'
+                type='submit'
+                w='100%'
+                fontSize={['sm', 'md']}
+              >
+                Update
+              </Button>
+              <Button
+                type='button'
+                w='100%'
+                fontSize={['sm', 'md']}
+                onClick={() => setModifyComment(false)}
+              >
+                Cancel
+              </Button>
             </VStack>
           </form>
         )}
-
       </Box>
+
       <DeleteAlert
         onClose={onClose}
         isOpen={isOpen}

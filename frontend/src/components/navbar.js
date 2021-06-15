@@ -19,23 +19,47 @@ export default function Navbar() {
   }
 
   return (
-    <Box position="sticky" top={0} p={[4, 6]} bg="gray.100" zIndex={1}>
-      <Flex justify="space-between" align='center' w="100%" position="sticky" top={0}>
+    <Box
+      position="sticky"
+      top={0}
+      p={[4, 6]}
+      bg="gray.100"
+      zIndex={1}
+    >
+      <Flex
+        justify="space-between"
+        align='center'
+        w="100%"
+        position="sticky"
+        top={0}
+      >
         <Image
           h='36px'
           src={windowSmallerThan520 ? LogoMobile : LogoDesktop}
           alt="Groupomania Logo"
         />
+
         <HStack spacing={4}>
           <Link to='/account'>
-            <Button as={Box} minWidth='95px' colorScheme="purple" fontSize={['sm', 'md']}>
+            <Button
+              as={Box}
+              minWidth='95px'
+              colorScheme="purple"
+              fontSize={['sm', 'md']}
+            >
               Account
             </Button>
           </Link>
-          <Button minWidth='95px' colorScheme="purple" fontSize={['sm', 'md']} onClick={() => handleLogout()}>
+          <Button
+            minWidth='95px'
+            colorScheme="purple"
+            fontSize={['sm', 'md']}
+            onClick={() => handleLogout()}
+          >
             Logout
           </Button>
         </HStack>
+        
       </Flex>
     </Box>
   )

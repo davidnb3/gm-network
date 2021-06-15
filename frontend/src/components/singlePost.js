@@ -26,7 +26,7 @@ export default function SinglePost({authToken, userId, topics}) {
   const [singlePost, setSinglePost] = useState({});
   const [commentBody, setCommentBody] = useState('');
   const [comments, setComments] = useState([]);
-  const [modifyPost, setModifyPost] = useState('');
+  const [modifyPost, setModifyPost] = useState(false);
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
   const [deleteBtn, setdeleteBtn] = useState('');
@@ -86,7 +86,12 @@ export default function SinglePost({authToken, userId, topics}) {
                 <ArrowBackIcon boxSize='1.3em'/>
               </Button>
             </Tooltip>
-            <Badge colorScheme='purple' fontSize={['0.55rem', '0.6rem']}>{singlePost.topic_name}</Badge>
+            <Badge
+              colorScheme='purple'
+              fontSize={['0.55rem', '0.6rem']}
+            >
+              {singlePost.topic_name}
+            </Badge>
             <Text color='grey' fontSize={['0.70rem', '0.75rem']}>
             {windowSmallerThan520 ? '' : 'Posted by: '}
             {singlePost.user_name}
@@ -99,7 +104,7 @@ export default function SinglePost({authToken, userId, topics}) {
                 size={windowSmallerThan520 ? 'xs' : 'sm'}
                 bg='transparent'
                 display={userId !== singlePost.user_id ? 'none' : 'flex'}
-                onClick={modifyPost === '' ? () => setModifyPost('modify-post') : () => setModifyPost('')}
+                onClick={modifyPost === false ? () => setModifyPost(true) : () => setModifyPost(false)}
               >
                 <EditIcon color='purple.500'/>
               </Button>
@@ -118,7 +123,7 @@ export default function SinglePost({authToken, userId, topics}) {
           </HStack>
         </Flex>
 
-        {modifyPost === 'modify-post' && (
+        {modifyPost === true && (
           <ModifyPost
             singlePost={singlePost}
             topics={topics}
@@ -128,12 +133,21 @@ export default function SinglePost({authToken, userId, topics}) {
           />
         )}
 
-        {modifyPost === '' && (
+        {modifyPost === false && (
           <>
-            <Heading fontSize={['lg' ,'xl']} fontWeight='500' lineHeight='2.2rem'>
+            <Heading
+              fontSize={['lg' ,'xl']}
+              fontWeight='500'
+              lineHeight='2.2rem'
+            >
               {singlePost.post_title}
             </Heading>
-            <Text lineHeight='1.6rem' fontSize={['sm', 'md']}>{singlePost.post_body}</Text>
+            <Text
+              lineHeight='1.6rem'
+              fontSize={['sm', 'md']}
+            >
+              {singlePost.post_body}
+            </Text>
             <form method='POST' onSubmit={handleAddComment}>
               <FormControl marginTop={10}>
                 <Textarea

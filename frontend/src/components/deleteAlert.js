@@ -49,7 +49,11 @@ export default function DeleteAlert({onClose, isOpen, deleteBtn, handleDelete}) 
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={() => handleDelete()} ml={3}>
+              <Button
+                colorScheme="red"
+                onClick={() => handleDelete()}
+                ml={3}
+              >
                 Delete
               </Button>
             </AlertDialogFooter>
