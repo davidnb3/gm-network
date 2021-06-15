@@ -3,12 +3,16 @@ import {
   Flex,
   Button,
   HStack,
-  Image
+  Image,
+  useMediaQuery
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import Logo from "../assets/images/icon-left-font-monochrome-black.svg";
+import LogoDesktop from "../assets/images/icon-left-font-monochrome-black.svg";
+import LogoMobile from "../assets/images/icon.svg";
 
 export default function Navbar() {
+  const [windowSmallerThan520] = useMediaQuery("(max-width: 520px)")
+
   const handleLogout = () => {
     sessionStorage.removeItem('token');
     window.location = '/';
@@ -19,16 +23,16 @@ export default function Navbar() {
       <Flex justify="space-between" align='center' w="100%" position="sticky" top={0}>
         <Image
           h='36px'
-          src={Logo}
+          src={windowSmallerThan520 ? LogoMobile : LogoDesktop}
           alt="Groupomania Logo"
         />
         <HStack spacing={4}>
           <Link to='/account'>
-            <Button as={Box} minWidth='95px' colorScheme="purple">
+            <Button as={Box} minWidth='95px' colorScheme="purple" fontSize={['sm', 'md']}>
               Account
             </Button>
           </Link>
-          <Button minWidth='95px' colorScheme="purple" onClick={() => handleLogout()}>
+          <Button minWidth='95px' colorScheme="purple" fontSize={['sm', 'md']} onClick={() => handleLogout()}>
             Logout
           </Button>
         </HStack>

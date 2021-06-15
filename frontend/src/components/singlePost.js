@@ -9,7 +9,9 @@ import {
   Badge,
   VStack,
   Tooltip,
-  Flex } from "@chakra-ui/react"
+  Flex,
+  useMediaQuery
+ } from "@chakra-ui/react"
 import { useParams } from "react-router-dom";
 import { DeleteIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { useState, useEffect } from 'react';
@@ -28,6 +30,7 @@ export default function SinglePost({authToken, userId, topics}) {
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
   const [deleteBtn, setdeleteBtn] = useState('');
+  const [windowSmallerThan520] = useMediaQuery("(max-width: 520px)")
   
   const handleDeleteBtn = (event) => {
     event.preventDefault();
@@ -65,7 +68,7 @@ export default function SinglePost({authToken, userId, topics}) {
         maxW="container.md"
         bg="white"
         w="100%"
-        p={[4, 6]}
+        p={[3, 4]}
         pt={4}
         borderColor='#CBD5E0'
         borderWidth='1px'
@@ -76,21 +79,24 @@ export default function SinglePost({authToken, userId, topics}) {
             <Tooltip label='Go back' fontSize='xs'>
               <Button
                   p={0}
-                  size='sm'
+                  size={windowSmallerThan520 ? 'xs' : 'sm'}
                   bg='transparent'
                   onClick={() => window.location = '/'}
                 >
                 <ArrowBackIcon boxSize='1.3em'/>
               </Button>
             </Tooltip>
-            <Badge colorScheme='purple' fontSize="0.6rem">{singlePost.topic_name}</Badge>
-            <Text color='grey' fontSize='xs'>Posted by: {singlePost.user_name}</Text>
+            <Badge colorScheme='purple' fontSize={['0.55rem', '0.6rem']}>{singlePost.topic_name}</Badge>
+            <Text color='grey' fontSize={['0.70rem', '0.75rem']}>
+            {windowSmallerThan520 ? '' : 'Posted by: '}
+            {singlePost.user_name}
+            </Text>
           </HStack>
           <HStack marginBottom='4px' lineHeight='1.2rem'>
             <Tooltip label="Modify Post" fontSize="xs">
               <Button
                 p={0}
-                size='sm'
+                size={windowSmallerThan520 ? 'xs' : 'sm'}
                 bg='transparent'
                 display={userId !== singlePost.user_id ? 'none' : 'flex'}
                 onClick={modifyPost === '' ? () => setModifyPost('modify-post') : () => setModifyPost('')}
@@ -102,7 +108,7 @@ export default function SinglePost({authToken, userId, topics}) {
               <Button
                 bg='none'
                 p={0}
-                size='sm'
+                size={windowSmallerThan520 ? 'xs' : 'sm'}
                 display={userId !== singlePost.user_id ? 'none' : 'flex'}
                 onClick={(event) => handleDeleteBtn(event)}
               >
@@ -124,10 +130,10 @@ export default function SinglePost({authToken, userId, topics}) {
 
         {modifyPost === '' && (
           <>
-            <Heading size='md' fontWeight='500' lineHeight='2.2rem'>
+            <Heading fontSize={['lg' ,'xl']} fontWeight='500' lineHeight='2.2rem'>
               {singlePost.post_title}
             </Heading>
-            <Text lineHeight='1.6rem'>{singlePost.post_body}</Text>
+            <Text lineHeight='1.6rem' fontSize={['sm', 'md']}>{singlePost.post_body}</Text>
             <form method='POST' onSubmit={handleAddComment}>
               <FormControl marginTop={10}>
                 <Textarea
@@ -135,6 +141,7 @@ export default function SinglePost({authToken, userId, topics}) {
                   name='comment'
                   value={commentBody}
                   type='text'
+                  fontSize={['sm', 'md']}
                   placeholder='Add a comment...'
                   focusBorderColor="#E9D8FD"
                   autoComplete='off'
@@ -146,6 +153,7 @@ export default function SinglePost({authToken, userId, topics}) {
                   type='submit'
                   disabled={commentBody === ''}
                   w='100%'
+                  fontSize={['sm', 'md']}
                   colorScheme='purple'
                 >
                   Comment

@@ -1,4 +1,14 @@
-import { Box, Text, VStack, HStack, Flex, Button, Tooltip, Textarea } from "@chakra-ui/react"
+import {
+  Box,
+  Text,
+  VStack,
+  HStack,
+  Flex,
+  Button,
+  Tooltip,
+  Textarea,
+  useMediaQuery
+} from "@chakra-ui/react"
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import DeleteAlert from './deleteAlert';
@@ -11,6 +21,7 @@ export default function Comments({comment, userId, authToken}) {
   const [commentText, setCommentText] = useState(comment.comment_body);
   const commentId = comment.comment_id;
   const [deleteBtn, setdeleteBtn] = useState('');
+  const [windowSmallerThan520] = useMediaQuery("(max-width: 520px)")
 
   const handleDeleteBtn = (event) => {
     event.preventDefault();
@@ -48,12 +59,15 @@ export default function Comments({comment, userId, authToken}) {
         borderRadius='5px'
       >
         <Flex justify='space-between' align='center' mb={2}>
-          <Text color='grey' fontSize='xs'>Posted by: {comment.user_name}</Text>
+        <Text color='grey' fontSize={['0.70rem', '0.75rem']}>
+            {windowSmallerThan520 ? '' : 'Posted by: '}
+            {comment.user_name}
+          </Text>
           <HStack>
             <Tooltip label="Modify Comment" fontSize="xs">
               <Button
                 p={0}
-                size='sm'
+                size={windowSmallerThan520 ? 'xs' : 'sm'}
                 bg='transparent'
                 display={userId !== comment.user_id ? 'none' : 'block'}
                 onClick={modifyComment === '' ? () => setModifyComment('modify-comment') : () => setModifyComment('')}
@@ -65,7 +79,7 @@ export default function Comments({comment, userId, authToken}) {
               <Button
                 bg='none'
                 p={0}
-                size='sm'
+                size={windowSmallerThan520 ? 'xs' : 'sm'}
                 display={userId !== comment.user_id ? 'none' : 'block'}
                 onClick={(event) => handleDeleteBtn(event)}
               >
@@ -76,7 +90,7 @@ export default function Comments({comment, userId, authToken}) {
         </Flex>
 
         {modifyComment === '' && (
-          <Text> {comment.comment_body} </Text>
+          <Text fontSize={['sm', 'md']}> {comment.comment_body} </Text>
         )}
 
         {modifyComment === 'modify-comment' && (
@@ -84,6 +98,7 @@ export default function Comments({comment, userId, authToken}) {
             <Textarea
               value={commentText}
               placeholder='Text'
+              fontSize={['sm', 'md']}
               focusBorderColor="#E9D8FD"
               borderWidth='1px'
               borderColor='gray.200'
@@ -91,8 +106,8 @@ export default function Comments({comment, userId, authToken}) {
               onChange={({target}) => setCommentText(target.value)}
             />
             <VStack spacing={4}>
-              <Button colorScheme='purple' type='submit' w='100%'>Update</Button>
-              <Button type='button' w='100%' onClick={() => setModifyComment('')}>Cancel</Button>
+              <Button colorScheme='purple' type='submit' w='100%' fontSize={['sm', 'md']}>Update</Button>
+              <Button type='button' w='100%' fontSize={['sm', 'md']} onClick={() => setModifyComment('')}>Cancel</Button>
             </VStack>
           </form>
         )}

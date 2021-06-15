@@ -8,6 +8,7 @@ import {
   Button,
   Box,
   Tooltip,
+  useMediaQuery
 } from "@chakra-ui/react"
 import { DeleteIcon } from '@chakra-ui/icons';
 import { Link } from "react-router-dom";
@@ -20,6 +21,7 @@ export default function Posts({post, authToken, userId, readPosts}) {
   const onClose = () => setIsOpen(false)
   const postId = post.post_id;
   const [deleteBtn, setDeleteBtn] = useState('');
+  const [windowSmallerThan520] = useMediaQuery("(max-width: 520px)")
 
   const handlePostsRead = () => {
     if (!readPosts.find(id => id.post_id === postId)) {
@@ -68,17 +70,32 @@ export default function Posts({post, authToken, userId, readPosts}) {
             boxShadow:"xl"
           }}
         >
-          <Container p='12px 24px 24px 24px' m={0} maxW='100%'>
-            <Flex justifyContent='space-between' minHeight='32px'>
+          <Container
+            p={['12px 18px 18px 18px', '12px 24px 24px 24px']}
+            m={0} maxW='100%'
+          >
+            <Flex
+              justify='space-between'
+              align='center'
+              minHeight='32px'
+            >
               <HStack marginBottom='4px' lineHeight='1.2rem'>
-                <Badge colorScheme='purple' fontSize="0.6rem">{post.topic_name}</Badge>
-                <Text color='grey' fontSize='xs'>Posted by: {post.user_name}</Text>
+                <Badge
+                  colorScheme='purple'
+                  fontSize={['0.55rem', '0.6rem']}
+                >
+                  {post.topic_name}
+                </Badge>
+                <Text color='grey' fontSize={['0.70rem', '0.75rem']}>
+                  {windowSmallerThan520 ? '' : 'Posted by: '}
+                  {post.user_name}
+                </Text>
               </HStack>
               <Tooltip label="Delete Post" fontSize="xs">
                 <Button
                   as={Box}
                   p={0}
-                  size='sm'
+                  size={windowSmallerThan520 ? 'xs' : 'sm'}
                   bg='transparent'
                   display={userId !== post.user_id ? 'none' : 'flex'}
                   onClick={handleDeleteBtn}
@@ -88,14 +105,14 @@ export default function Posts({post, authToken, userId, readPosts}) {
               </Tooltip>
             </Flex>
             <Heading
-              fontSize='xl'
+              fontSize={['lg' ,'xl']}
               fontWeight='500'
               lineHeight='2.2rem'
             > 
               {post.post_title} 
             </Heading>
             <Text
-              fontSize='md'
+              fontSize={['sm', 'md']}
               lineHeight='1.6rem'
               noOfLines={[3, 3, 4]}
             >

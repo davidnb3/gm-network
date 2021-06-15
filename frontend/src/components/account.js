@@ -10,7 +10,6 @@ import { useState, useEffect } from 'react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import postDataToApi from '../api/postDataToApi';
 import DeleteAlert from './deleteAlert';
-import Icon from '../assets/images/icon.svg';
 
 export default function Account({userId, authToken}) {
   const [userData, setUserData] = useState({});

@@ -6,7 +6,7 @@ import {Box,
   Collapse,
   Textarea,
   Button,
-  Select
+  Select,
 } from "@chakra-ui/react";
 
 export default function CreatePost({topics, authToken, userId}) {
@@ -66,6 +66,7 @@ export default function CreatePost({topics, authToken, userId}) {
                 onFocus={onOpen}
                 type='text'
                 placeholder={isOpen ? 'Title' : 'Create a new post here ...'}
+                fontSize={['sm', 'md']}
                 focusBorderColor="#E9D8FD"
                 autoComplete='off'
                 onChange={({target}) => setTitle(target.value)}
@@ -78,6 +79,7 @@ export default function CreatePost({topics, authToken, userId}) {
                   marginTop={4}
                   marginBottom={2.5}
                   h='130px'
+                  fontSize={['sm', 'md']}
                   focusBorderColor="#E9D8FD"
                   borderWidth='1px'
                   borderColor='gray.200'
@@ -87,6 +89,7 @@ export default function CreatePost({topics, authToken, userId}) {
                   placeholder='Select Topic'
                   onChange={({target}) => setSelectTopic(target.value)}
                   marginBottom={4}
+                  fontSize={['sm', 'md']}
                 >
                   {topics.map((topic) => (
                     <option
@@ -101,6 +104,7 @@ export default function CreatePost({topics, authToken, userId}) {
                   colorScheme='purple'
                   type='submit'
                   disabled={invalid}
+                  fontSize={['sm', 'md']}
                   w='100%'
                 >
                   Post</Button>

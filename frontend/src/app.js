@@ -59,7 +59,7 @@ export default function App() {
         backgroundColor='#dbdae8'
         minHeight='100vh'
         height='100%'
-        p={[4, 6]}
+        p={[3, 6]}
         paddingBottom='20px'
         maxW='100%'
         m={0}

@@ -43,8 +43,8 @@ export default function LogIn({setToken}) {
 
   return(
     <>
-      <Center h='100vh'>
-        <Container maxW='md' bg="white" p={8} borderRadius='5px'>
+      <Center h='100vh' p={4}>
+        <Container maxW='md' bg="white" p={[4, 8]} borderRadius='5px'>
           <form method='POST' onSubmit={handleLogin}>
             <VStack spacing={6}>
               <FormControl isRequired>
