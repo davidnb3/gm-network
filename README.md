@@ -1,6 +1,6 @@
 Groupomania-Network
 
-Full-Stack App (Reddit Clone) built with React + Postgresql
+Full-Stack App (Internal Social Network) built with PERN Stack (Postgresql + Express + React + Node)
 
 Run npm install in both folders
 
