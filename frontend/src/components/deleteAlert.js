@@ -10,8 +10,8 @@ import {
 import { useRef, useState, useEffect } from 'react';
 
 export default function DeleteAlert({onClose, isOpen, deleteBtn, handleDelete}) {
-  const cancelRef = useRef()
   const [alertMessage, setAlertMessage] = useState('');
+  const cancelRef = useRef()
 
   
   const changeAlertMessage = () => {

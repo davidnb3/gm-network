@@ -16,12 +16,12 @@ import postDataToApi from '../api/postDataToApi';
 
 export default function Comments({comment, userId, authToken}) {
   const [isOpen, setIsOpen] = useState(false)
-  const onClose = () => setIsOpen(false)
   const [modifyComment, setModifyComment] = useState(false);
   const [commentText, setCommentText] = useState(comment.comment_body);
-  const commentId = comment.comment_id;
   const [deleteBtn, setdeleteBtn] = useState('');
   const [windowSmallerThan520] = useMediaQuery("(max-width: 520px)")
+  const onClose = () => setIsOpen(false)
+  const commentId = comment.comment_id;
 
   const handleDeleteBtn = (event) => {
     event.preventDefault();

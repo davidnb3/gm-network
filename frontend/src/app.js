@@ -1,3 +1,8 @@
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 import { Container, VStack } from "@chakra-ui/react";
 import { useState, useEffect } from 'react';
 import Posts from './components/posts';
@@ -10,19 +15,14 @@ import LogIn from './components/login';
 import useToken from './hooks/useToken';
 import Account from './components/account';
 import getDataFromApi from './api/getDataFromApi';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
 
 export default function App() {
   const [topics, setTopics] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [readPosts, setReadPosts] = useState([]);
   const {token, setToken} = useToken();
   const authToken = token?.authentication;
   const userId = token?.userId;
-  const [readPosts, setReadPosts] = useState([]);
 
   useEffect(() => {
     getDataFromApi('posts', '', authToken, setPosts);

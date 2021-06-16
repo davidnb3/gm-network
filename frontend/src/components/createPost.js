@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {Box,
   FormControl,
   Input,
@@ -8,13 +7,14 @@ import {Box,
   Button,
   Select,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import postDataToApi from "../api/postDataToApi";
 
 export default function CreatePost({topics, authToken, userId}) {
-  const { isOpen, onOpen } = useDisclosure();
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [selectTopic, setSelectTopic] = useState();
+  const { isOpen, onOpen } = useDisclosure();
   const invalid = title === '' || selectTopic === undefined;
 
   const handleAddPost = (event) => {

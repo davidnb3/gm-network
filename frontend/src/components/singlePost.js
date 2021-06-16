@@ -12,8 +12,8 @@ import {
   Flex,
   useMediaQuery
  } from "@chakra-ui/react"
+ import { DeleteIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { useParams } from "react-router-dom";
-import { DeleteIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { useState, useEffect } from 'react';
 import Comments from './comments';
 import DeleteAlert from './deleteAlert';
@@ -22,15 +22,15 @@ import getDataFromApi from '../api/getDataFromApi';
 import postDataToApi from '../api/postDataToApi';
 
 export default function SinglePost({authToken, userId, topics}) {
-  const {id} = useParams();
   const [singlePost, setSinglePost] = useState({});
   const [commentBody, setCommentBody] = useState('');
   const [comments, setComments] = useState([]);
   const [modifyPost, setModifyPost] = useState(false);
   const [isOpen, setIsOpen] = useState(false)
-  const onClose = () => setIsOpen(false)
   const [deleteBtn, setdeleteBtn] = useState('');
   const [windowSmallerThan520] = useMediaQuery("(max-width: 520px)")
+  const {id} = useParams();
+  const onClose = () => setIsOpen(false)
   
   const handleDeleteBtn = (event) => {
     event.preventDefault();

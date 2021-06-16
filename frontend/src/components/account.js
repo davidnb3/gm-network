@@ -7,16 +7,16 @@ import {
   Avatar,
   VStack
 } from "@chakra-ui/react";
-import { useState, useEffect } from 'react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import { useState, useEffect } from 'react';
 import postDataToApi from '../api/postDataToApi';
 import DeleteAlert from './deleteAlert';
 
 export default function Account({userId, authToken}) {
   const [userData, setUserData] = useState({});
   const [isOpen, setIsOpen] = useState(false)
-  const onClose = () => setIsOpen(false)
   const [deleteBtn, setdeleteBtn] = useState('');
+  const onClose = () => setIsOpen(false)
 
   const handleDeleteBtn = (event) => {
     event.preventDefault();

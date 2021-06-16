@@ -11,17 +11,17 @@ import {
   useMediaQuery
 } from "@chakra-ui/react"
 import { DeleteIcon } from '@chakra-ui/icons';
-import { Link } from "react-router-dom";
 import { useState } from 'react';
+import { Link } from "react-router-dom";
 import DeleteAlert from './deleteAlert';
 import postDataToApi from '../api/postDataToApi';
 
 export default function Posts({post, authToken, userId, readPosts}) {
   const [isOpen, setIsOpen] = useState(false)
-  const onClose = () => setIsOpen(false)
-  const postId = post.post_id;
   const [deleteBtn, setDeleteBtn] = useState('');
   const [windowSmallerThan520] = useMediaQuery("(max-width: 520px)")
+  const onClose = () => setIsOpen(false)
+  const postId = post.post_id;
 
   const handlePostsRead = () => {
     if (!readPosts.find(id => id.post_id === postId)) {
