@@ -20,10 +20,13 @@ export default function App() {
   const [topics, setTopics] = useState([]);
   const [posts, setPosts] = useState([]);
   const [readPosts, setReadPosts] = useState([]);
+  // Using custom hook to get/save token from/to Sessionstorage
   const {token, setToken} = useToken();
+  // Using JWT for request authorization
   const authToken = token?.authentication;
   const userId = token?.userId;
 
+  // Get all posts + topics & set read posts on first render
   useEffect(() => {
     getDataFromApi('posts', '', authToken, setPosts);
     getDataFromApi('topics', '', authToken, setTopics);
