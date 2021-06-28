@@ -30,6 +30,9 @@ exports.login = async (req, res) => {
     const {username, password} = req.body;
     const userData = await pool.query('SELECT * FROM users WHERE user_name = $1', [username]);
     const user = userData.rows[0];
+    if (!user) {
+      return res.status(401).json({error: 'User doesn\'t exist!'});
+    }
     bcrypt.compare(password, user.user_pw).then((valid) => {
       if (!valid) {
         return res.status(401).json({error: 'Incorrect password!'});
@@ -48,7 +51,7 @@ exports.login = async (req, res) => {
       res.status(401).json(error)
     })
   } catch (error) {
-    res.status(500).json(error);
+    res.status(401).json(error);
   }
 }
 
