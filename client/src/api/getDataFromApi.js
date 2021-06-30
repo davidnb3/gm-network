@@ -1,7 +1,7 @@
 export default async function getDataFromApi(endpoint, id, authtoken, setState) {
   if (authtoken) {
     try {
-      const response = await fetch((`http://localhost:5000/api/${endpoint}/${id}`), {
+      const response = await fetch((`/api/${endpoint}/${id}`), {
         headers: {'Authorization': `Bearer ${authtoken}`}
       });
       const data = await response.json();
