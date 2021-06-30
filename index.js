@@ -4,7 +4,9 @@ const postRoutes = require('./routes/post');
 const topicRoutes = require('./routes/topic');
 const userRoutes = require('./routes/user');
 const commentRoutes = require('./routes/comment');
+const path = require('path');
 const cors = require('cors')
+const PORT = process.env.PORT || 5000;
 
 const app = express();
 app.use(cors());
@@ -18,11 +20,15 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+}
+
 app.use('/api/auth', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/topics', topicRoutes);
 app.use('/api/comments', commentRoutes);
 
-app.listen(5000, () => {
-  console.log('server started on port 5000')
-})
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
