@@ -1,4 +1,4 @@
-const pool = require('../middleware/db');
+const pool = require('../db');
 
 exports.getAllTopics = async (req, res) => {
   try {

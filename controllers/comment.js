@@ -1,4 +1,4 @@
-const pool = require('../middleware/db');
+const pool = require('../db');
 
 exports.getAllComments = async (req, res) => {
   try {
