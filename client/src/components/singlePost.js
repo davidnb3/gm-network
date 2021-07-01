@@ -41,10 +41,12 @@ export default function SinglePost({authToken, userId, topics}) {
   const handleDelete = () => {
     if (deleteBtn === 'post') {
       setIsOpen(false);
-      postDataToApi('posts', id, 'DELETE', authToken, {userId});
-      window.location = '/';
-    }
-  }
+      postDataToApi('posts', id, 'DELETE', authToken, {userId}).then(() => {
+        // Promise to reload page only after function is finished
+        window.location = '/';
+      });
+    };
+  };
 
   const handleAddComment = (event) => {
     event.preventDefault();
@@ -53,8 +55,10 @@ export default function SinglePost({authToken, userId, topics}) {
       post_id: id,
       body: commentBody
     };
-    postDataToApi('comments', '', 'POST', authToken, comment);
-    window.location.reload();
+    postDataToApi('comments', '', 'POST', authToken, comment).then(() => {
+      // Promise to reload page only after function is finished
+      window.location.reload();
+    })
   };
 
   useEffect(() => {

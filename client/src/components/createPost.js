@@ -25,11 +25,13 @@ export default function CreatePost({topics, authToken, userId}) {
       title: title,
       body: text
     };
-    postDataToApi('posts', '', 'POST', authToken, post);
-    window.location = '/';
-    setTitle('');
-    setText('');
-  }
+    postDataToApi('posts', '', 'POST', authToken, post).then(() => {
+      // Promise to reload only after function is finished
+      window.location = '/';
+      setTitle('');
+      setText('');
+    });
+  };
 
   return(
     <>

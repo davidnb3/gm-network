@@ -46,9 +46,11 @@ export default function Posts({post, authToken, userId, readPosts}) {
   const handleDelete = () => {
     if (deleteBtn === 'post') {
       setIsOpen(false);
-      postDataToApi('posts', postId, 'DELETE', authToken, {userId});
-      window.location = '/';
-    }
+      postDataToApi('posts', postId, 'DELETE', authToken, {userId}).then(() => {
+        // Promise to reload page only after function is finished
+        window.location = '/';
+      });
+    };
   };
 
   return(

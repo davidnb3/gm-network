@@ -32,8 +32,10 @@ export default function Comments({comment, userId, authToken}) {
   const handleDelete = () => {
     if (deleteBtn === 'comment') {
       setIsOpen(false);
-      postDataToApi('comments', '', 'DELETE', authToken, {commentId});
-      window.location.reload();
+      postDataToApi('comments', '', 'DELETE', authToken, {commentId}).then(() => {
+        // Promise to reload page only after function is finished
+        window.location.reload();
+      })
     }
   }
 
