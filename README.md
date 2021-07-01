@@ -1,11 +1,9 @@
 Groupomania-Network
 
-Full-Stack App (Internal Social Network) built with PERN Stack (Postgresql + Express + React + Node)
+Full-Stack App (Internal Social Network) built with PERN Stack (Postgresql + Express + React + Node).
 
-Run npm install in both folders
+Last project of the Openclassrooms Web Developer Path.
 
-Run nodemon server inside backend folder to start the server
-
-Run npm start inside frontend folder to start the app
+Deployed on Heroku: https://gm-network.herokuapp.com/
 
 
