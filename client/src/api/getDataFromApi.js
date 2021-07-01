@@ -2,7 +2,7 @@ export default async function getDataFromApi(endpoint, id, authtoken, setState) 
   if (authtoken) {
     try {
       const response = await fetch((`/api/${endpoint}/${id}`), {
-        headers: {'Authorization': `Bearer ${authtoken}`}
+        headers: {'Authorization': `Bearer ${authtoken}`, 'Connection': 'keep-alive'}
       });
       const data = await response.json();
       if (!response.ok) {

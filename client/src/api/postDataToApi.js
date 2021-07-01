@@ -2,7 +2,7 @@ export default async function postDataToApi(endpoint, id, method, authToken, dat
     try {
       const response = await fetch((`/api/${endpoint}/${id}`), {
         method: method,
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`},
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'Connection': 'keep-alive'},
         body: JSON.stringify(data)
       })
       const responseData = await response.json();
