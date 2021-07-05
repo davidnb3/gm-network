@@ -10,23 +10,26 @@ import {
 import { useRef, useState, useEffect } from 'react';
 
 export default function DeleteAlert({onClose, isOpen, deleteBtn, handleDelete}) {
+  // State to change alertmessage
+  // depending on which delete button was pressed
   const [alertMessage, setAlertMessage] = useState('');
   const cancelRef = useRef()
 
   
-  const changeAlertMessage = () => {
-    if (deleteBtn === 'post') {
-      setAlertMessage('Delete Post')
-    };
-    if (deleteBtn === 'comment') {
-      setAlertMessage('Delete Comment')
-    };
-    if (deleteBtn === 'account') {
-      setAlertMessage('Delete Account')
-    };
-  }
-
+  
   useEffect(() => {
+    // Change alert message depending on which delete button was pressed
+    const changeAlertMessage = () => {
+      if (deleteBtn === 'post') {
+        setAlertMessage('Delete Post')
+      };
+      if (deleteBtn === 'comment') {
+        setAlertMessage('Delete Comment')
+      };
+      if (deleteBtn === 'account') {
+        setAlertMessage('Delete Account')
+      };
+    }
     changeAlertMessage();
   });
 
@@ -40,6 +43,7 @@ export default function DeleteAlert({onClose, isOpen, deleteBtn, handleDelete}) 
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              {/* Message depeding on which delete button was pressed */}
               {alertMessage}
             </AlertDialogHeader>
             <AlertDialogBody>

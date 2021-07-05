@@ -23,16 +23,18 @@ export default function App() {
   // Using custom hook to get/save token from/to Sessionstorage
   const {token, setToken} = useToken();
   // Using JWT for request authorization
+  // which is extracted from the sessionstorage
   const authToken = token?.authentication;
   const userId = token?.userId;
 
-  // Get all posts + topics & set read posts on first render
+  // Get all posts + topics + set read posts after first render
   useEffect(() => {
     getDataFromApi('posts', '', authToken, setPosts);
     getDataFromApi('topics', '', authToken, setTopics);
     getDataFromApi('posts/postsread', userId, authToken, setReadPosts);
   }, [authToken, userId] );
 
+  // If token doesn't exist in SS, show login/signup component
   if (!token) {
     return (
       <div style={{
@@ -69,6 +71,7 @@ export default function App() {
         centerContent
       >
         <Switch>
+          {/* Main Page */}
           <Route exact path='/'>
             <Container maxW="container.lg" d='flex' p={0}>
               <Container maxW="container.md" p={0} m={0}>
@@ -105,6 +108,7 @@ export default function App() {
             </Container>
           </Route>
 
+          {/* Single Post page */}
           <Route exact path={'/post/:id'} render={() => (
             <SinglePost
               authToken={authToken}
@@ -112,7 +116,8 @@ export default function App() {
               topics={topics}
             />
           )}/>
-
+          
+          {/* Account page */}
           <Route exact path='/account' render={() => (
             <Account
               userId={userId}

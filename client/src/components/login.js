@@ -22,6 +22,7 @@ export default function LogIn({setToken}) {
   const isInvalid = password === '' || username === '';
   
   async function handleLogin(event) {
+    // Send login request and save token to SS
     event.preventDefault();
     try {
       const user = {
@@ -34,11 +35,9 @@ export default function LogIn({setToken}) {
         body: JSON.stringify(user)
       })
       const data = await response.json();
-      
       if (data.error) {
         setErrorMsg(data.error);
       }
-
       if (!response.ok) {
         throw new Error(response.statusText);
       }

@@ -25,8 +25,10 @@ export default function SinglePost({authToken, userId, topics}) {
   const [singlePost, setSinglePost] = useState({});
   const [commentBody, setCommentBody] = useState('');
   const [comments, setComments] = useState([]);
+  // State to display post modification if user clicks on button
   const [modifyPost, setModifyPost] = useState(false);
   const [isOpen, setIsOpen] = useState(false)
+  // State to set which delete button was pressed
   const [deleteBtn, setdeleteBtn] = useState('');
   const [windowSmallerThan520] = useMediaQuery("(max-width: 520px)")
   const {id} = useParams();
@@ -34,6 +36,7 @@ export default function SinglePost({authToken, userId, topics}) {
   
   const handleDeleteBtn = (event) => {
     event.preventDefault();
+    // Post delete button was pressed
     setdeleteBtn('post');
     setIsOpen(true);
   };
@@ -108,6 +111,8 @@ export default function SinglePost({authToken, userId, topics}) {
                 size={windowSmallerThan520 ? 'xs' : 'sm'}
                 bg='transparent'
                 display={userId !== singlePost.user_id ? 'none' : 'flex'}
+                // Edit button to modify post
+                // which displays either the post or the form to update the post
                 onClick={modifyPost === false ? () => setModifyPost(true) : () => setModifyPost(false)}
               >
                 <EditIcon color='purple.500'/>
@@ -126,7 +131,8 @@ export default function SinglePost({authToken, userId, topics}) {
             </Tooltip>
           </HStack>
         </Flex>
-
+        {/* If state is set to true, show form to update post 
+            which is another component */}
         {modifyPost === true && (
           <ModifyPost
             singlePost={singlePost}
@@ -136,7 +142,7 @@ export default function SinglePost({authToken, userId, topics}) {
             id={id}
           />
         )}
-
+        {/* If state is set to false, only show post */}
         {modifyPost === false && (
           <>
             <Heading

@@ -15,22 +15,26 @@ import DeleteAlert from './deleteAlert';
 export default function Account({userId, authToken}) {
   const [userData, setUserData] = useState({});
   const [isOpen, setIsOpen] = useState(false)
+  // State to set which delete button was pressed
   const [deleteBtn, setdeleteBtn] = useState('');
-  const onClose = () => setIsOpen(false)
+  const onClose = () => setIsOpen(false);
 
   const handleDeleteBtn = (event) => {
     event.preventDefault();
+    // Account delete button was pressed
     setdeleteBtn('account');
     setIsOpen(true);
   };
 
   const handleDelete = () => {
     if (deleteBtn === 'account') {
-      postDataToApi('auth', '', 'DELETE', authToken, {userId});
-      sessionStorage.removeItem('token');
-      window.location = '/';
-    }
-  }
+      // Deletes account + removes token from SS + goes back to login page
+      postDataToApi('auth', '', 'DELETE', authToken, {userId}).then(() => {
+        sessionStorage.removeItem('token');
+        window.location = '/';
+      });
+    };
+  };
 
   useEffect(() => {
     postDataToApi('auth', '', 'POST', authToken, {userId}, setUserData);
@@ -76,6 +80,7 @@ export default function Account({userId, authToken}) {
             {userData[0]?.user_email}
           </Text>
           <Text fontSize={['sm', 'md']}>
+            {/* Show only date without time */}
             Created on: {userData[0]?.created_on.slice(0, 10)}
           </Text>
           <Button

@@ -18,17 +18,20 @@ import postDataToApi from '../api/postDataToApi';
 
 export default function Posts({post, authToken, userId, readPosts}) {
   const [isOpen, setIsOpen] = useState(false)
+  // State to set which delete button was pressed
   const [deleteBtn, setDeleteBtn] = useState('');
   const [windowSmallerThan520] = useMediaQuery("(max-width: 520px)")
   const onClose = () => setIsOpen(false)
   const postId = post.post_id;
 
   const handlePostsRead = () => {
+    // If post isn't read yet, save post ID + user ID to DB
     if (!readPosts.find(id => id.post_id === postId)) {
       postDataToApi('posts', postId, 'POST', authToken, {userId});
     }
   };
 
+  // Sets opacity depending on if the post has been read or not
   const setOpacity = () => {
     if (readPosts.find(id => id.post_id === postId)) {
       return '0.6'

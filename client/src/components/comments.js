@@ -15,9 +15,11 @@ import DeleteAlert from './deleteAlert';
 import postDataToApi from '../api/postDataToApi';
 
 export default function Comments({comment, userId, authToken}) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  // State to display comment modification if user clicks on button
   const [modifyComment, setModifyComment] = useState(false);
   const [commentText, setCommentText] = useState(comment.comment_body);
+  // State to set which delete button was pressed
   const [deleteBtn, setdeleteBtn] = useState('');
   const [windowSmallerThan520] = useMediaQuery("(max-width: 520px)")
   const onClose = () => setIsOpen(false)
@@ -25,6 +27,7 @@ export default function Comments({comment, userId, authToken}) {
 
   const handleDeleteBtn = (event) => {
     event.preventDefault();
+    // Comment delete button was pressed
     setdeleteBtn('comment');
     setIsOpen(true);
   };
@@ -80,6 +83,8 @@ export default function Comments({comment, userId, authToken}) {
                 size={windowSmallerThan520 ? 'xs' : 'sm'}
                 bg='transparent'
                 display={userId !== comment.user_id ? 'none' : 'block'}
+                // Edit button to modify comment
+                // which displays either the comment or the form to update the comment
                 onClick={modifyComment === false ? () => setModifyComment(true) : () => setModifyComment(false)}
               >
                 <EditIcon color='purple.500'/>
@@ -99,10 +104,11 @@ export default function Comments({comment, userId, authToken}) {
           </HStack>
         </Flex>
 
+        {/* If state is set to false, only show comment */}
         {modifyComment === false && (
           <Text fontSize={['sm', 'md']}> {comment.comment_body} </Text>
         )}
-
+        {/* If state is set to true, show form to update comment */}
         {modifyComment === true && (
           <form method='PUT' onSubmit={() => handleUpdateComment()}>
             <Textarea
