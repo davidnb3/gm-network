@@ -20,15 +20,18 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+// If server is running on production, serve static build file
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')));
 };
 
+// Endpoints
 app.use('/api/auth', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/topics', topicRoutes);
 app.use('/api/comments', commentRoutes);
 
+// Send back static build file when client uses any other request params
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });

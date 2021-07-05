@@ -5,12 +5,14 @@ const jwt = require('jsonwebtoken');
 exports.signup = async (req, res) => {
   const {email, username, password} = req.body;
   try {
+    // Checks if email already exists inside DB
     const user = await pool.query('SELECT * FROM users WHERE user_email = $1' ,
       [email]
     );
     if (user.rows.length > 0) {
       return res.status(401).json('User already exists.')
     }
+    // Hashes password before saving data to DB
     if (req.body.password && email && username) {
       const hashedPassword = await bcrypt.hash(password, 10);
       pool.query('INSERT INTO users (user_email, user_name, user_pw, created_on) \
@@ -27,16 +29,19 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
+    // Checks if username exists
     const {username, password} = req.body;
     const userData = await pool.query('SELECT * FROM users WHERE user_name = $1', [username]);
     const user = userData.rows[0];
     if (!user) {
       return res.status(401).json({error: 'User doesn\'t exist!'});
     }
+    // Compares password inside request body with hashed password inside DB
     bcrypt.compare(password, user.user_pw).then((valid) => {
       if (!valid) {
         return res.status(401).json({error: 'Incorrect password!'});
       }
+      // If valid, generate and send back token
       const token = jwt.sign(
         {userId: user.user_id},
         'token_secret',

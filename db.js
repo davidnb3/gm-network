@@ -1,6 +1,7 @@
 const Pool  = require('pg').Pool;
 require('dotenv').config();
 
+// Use this config when running locally
 const devConfig = {
   user: process.env.PG_User,
   host: process.env.PG_Host,
@@ -9,8 +10,10 @@ const devConfig = {
   port: process.env.PG_Port,
 }
 
+// Use this config when running in production (Heroku)
 const proConfig = {
   connectionString: process.env.DATABASE_URL,
+  // Bad idea, but for now it wasn't asked to renew the certificate and use HTTPS
   ssl: {rejectUnauthorized: false}
 };
 
