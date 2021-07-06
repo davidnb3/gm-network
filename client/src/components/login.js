@@ -34,6 +34,7 @@ export default function LogIn({setToken}) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(user)
       })
+      // If data contains error message, save to state and display it
       const data = await response.json();
       if (data.error) {
         setErrorMsg(data.error);

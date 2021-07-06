@@ -9,7 +9,8 @@ import {
   InputRightElement,
   VStack,
   Center,
-  Link
+  Link,
+  Text
 } from "@chakra-ui/react";
 import { useState } from 'react';
 import { Link as RouterLink } from "react-router-dom";
@@ -18,6 +19,7 @@ export default function Signup() {
   const  [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ username, setUsername ] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const [ showPassword, setShowPassword ] = useState(false);
   const isInvalid = password === '' || email === '';
   
@@ -34,6 +36,11 @@ export default function Signup() {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(user)
       })
+      // If data contains error message, save to state and display it
+      const data = await response.json();
+      if (data.error) {
+        setErrorMsg(data.error);
+      }
       if (!response.ok) {
         throw new Error(response.statusText);
       }
@@ -49,6 +56,7 @@ export default function Signup() {
         <Container maxW='md' bg="white" p={[4, 8]} borderRadius='5px'>
           <form method='POST' onSubmit={handleSignUp}>
             <VStack spacing={6}>
+            <Text color='red.600' display={errorMsg ? 'block' : 'none'}>{errorMsg}</Text>
               <FormControl isRequired>
                 <FormLabel htmlFor='username'>User Name</FormLabel>
                 <Input
