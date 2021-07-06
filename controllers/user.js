@@ -6,11 +6,14 @@ exports.signup = async (req, res) => {
   const {email, username, password} = req.body;
   try {
     // Checks if email already exists inside DB
-    const user = await pool.query('SELECT * FROM users WHERE user_email = $1' ,
-      [email]
+    const userMail = await pool.query('SELECT * FROM users WHERE user_email = $1',
+    [email]
     );
-    if (user.rows.length > 0) {
-      return res.status(401).json('User already exists.')
+    const userName = await pool.query('SELECT * FROM users WHERE user_name = $1',
+    [username]
+    );
+    if (userMail.rows.length > 0 || userName.rows.length > 0) {
+      return res.status(401).json({error: 'User already exists.'})
     }
     // Hashes password before saving data to DB
     if (req.body.password && email && username) {
